@@ -11,6 +11,8 @@ using System.IO;
 using System.Runtime;
 using AwakeDesk.Models;
 using AwakeDesk.Helpers;
+using System.Text;
+using System.Windows.Media.Imaging;
 
 namespace AwakeDesk.Views
 {
@@ -19,6 +21,9 @@ namespace AwakeDesk.Views
         private const int LOWER_BOUND_FOR_RANDOM_SCREENSAVER_PREVENT = 5;
         private const int UPPER_BOUND_FOR_RANDOM_SCREENSAVER_PREVENT = 20;
         private const int SCREENSAVER_TIMEOUT_OVERRIDE = 300;
+        private const string ACTUAL_TIME_FORMAT = "HH:mm:ss";
+        private const string CLOCK_TRAY_ICON_BASE = "../Media/img/ClockTray.png";
+        private const string CLOCK_TRAY_ICON_HIGHLITED = "../Media/img/ClockTrayHighlighted.png";
 
         private string actualTime;
         private int elapsedIdle;
@@ -32,21 +37,19 @@ namespace AwakeDesk.Views
         private System.Drawing.Size PrimaryScreenSize;
         private readonly Random rnd = new();
         private double moverDelay = 0;
-        private bool clockTextBlockLighting = false;
         private bool showingSettings = false;
         private MediaPlayer alarmPlayer;
         private int alarmPlayngTime = 0;
         private int alarmStartedMinute = -1;
-        private readonly SolidColorBrush clockBaseColor;
-        private readonly SolidColorBrush colorHighlitedColor;
+        private bool isClockIconLighting = false;
+        private bool isClockIconHighlighted;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public MainWindow()
         {
             InitializeComponent();
-            clockBaseColor = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
-            colorHighlitedColor = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0));
+            isClockIconHighlighted = false;
 
             AwakeDeskHelpers.MakeWindowAlwaysOnTop(this);
             DataContext = this;
@@ -54,7 +57,7 @@ namespace AwakeDesk.Views
             {
                 if (this.alarmPlayngTime > 0)
                 {
-                    clockTextBlockLighting = false;
+                    isClockIconLighting = false;
                     alarmPlayngTime = 100;
                 }
                 if (e.ButtonState == MouseButtonState.Pressed)
@@ -76,7 +79,7 @@ namespace AwakeDesk.Views
             double screenWidth = SystemParameters.PrimaryScreenWidth;
             double screenHeight = SystemParameters.PrimaryScreenHeight;
             PrimaryScreenSize = new System.Drawing.Size((int)screenWidth, (int)screenHeight + 2);
-            this.Left = PrimaryScreenSize.Width - (this.Width + 44);
+            this.Left = PrimaryScreenSize.Width - (this.Width + 73);
             this.Top = PrimaryScreenSize.Height - (this.Height + 26);
 
 
@@ -99,7 +102,7 @@ namespace AwakeDesk.Views
 
 
             var actualDate = DateTime.Now;
-            actualTime = actualDate.ToString("HH:mm:ss");
+            actualTime = actualDate.ToString(ACTUAL_TIME_FORMAT);
 
             var dataAttuale = DateTime.Now;
             var closeTimeParts = App.AwakeDeskSettings.Preset1.Split(":");
@@ -111,6 +114,16 @@ namespace AwakeDesk.Views
         {
             elapsedIdle = AwakeDeskHelpers.GetIdleTime();
             screenSaverPreventTimeout = screenSaverTimeout - rnd.Next(LOWER_BOUND_FOR_RANDOM_SCREENSAVER_PREVENT, UPPER_BOUND_FOR_RANDOM_SCREENSAVER_PREVENT);
+        }
+
+        private void ChangeImageSource(string imagePath)
+        {
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(imagePath, UriKind.Relative);
+            bitmap.EndInit();
+
+            ClockIcon.Source = bitmap;
         }
 
         private void GenerateNextPoint()
@@ -139,27 +152,22 @@ namespace AwakeDesk.Views
 
         private void ToggleClockTextBlockLighting()
         {
-            var actualClockColor = ClockTextBlock.Foreground.ToString();
-            var nextClockColor = clockBaseColor;
-            if (clockTextBlockLighting)
+            if (isClockIconLighting)
             {
-                nextClockColor = clockBaseColor;
-                if (actualClockColor == clockBaseColor.ToString())
+                isClockIconHighlighted = !isClockIconHighlighted;
+                if (isClockIconHighlighted)
                 {
-                    nextClockColor = colorHighlitedColor;
+                    ChangeImageSource(CLOCK_TRAY_ICON_HIGHLITED);
+                    return;
                 }
-            }
-
-            if (actualClockColor != nextClockColor.ToString())
-            {
-                ClockTextBlock.Foreground = nextClockColor;
+                ChangeImageSource(CLOCK_TRAY_ICON_BASE);
             }
         }
 
         #region Timers
         private void MainTimer_Tick(object? sender, EventArgs e)
         {
-            ActualTime = DateTime.Now.ToString("HH:mm:ss");
+            ActualTime = DateTime.Now.ToString(ACTUAL_TIME_FORMAT);
             if (!showingSettings)
             {
                 this.Topmost = false;
@@ -184,7 +192,9 @@ namespace AwakeDesk.Views
                 if (alarmPlayngTime > 60)
                 {
                     alarmPlayngTime = 0;
-                    clockTextBlockLighting = false;
+                    isClockIconLighting = false;
+                    isClockIconHighlighted = false;
+                    ChangeImageSource(CLOCK_TRAY_ICON_BASE);
                     alarmPlayer.Stop();
                 }
 
@@ -197,7 +207,7 @@ namespace AwakeDesk.Views
                 && alarmPlayngTime == 0)
             {
                 alarmStartedMinute = DateTime.Now.Minute;
-                clockTextBlockLighting = true;
+                isClockIconLighting = true;
                 alarmPlayngTime++;
                 alarmPlayer.Position = TimeSpan.FromSeconds(0);
                 alarmPlayer.Play();

@@ -6,29 +6,49 @@
         xmlns:local="clr-namespace:AwakeDesk"
         mc:Ignorable="d"
         Height="18"
-        Width="53"
+        Width="18"
         ResizeMode="NoResize" 
         WindowStyle="none" 
-        AllowsTransparency="False"
+        AllowsTransparency="True"
+        Background="Transparent"
         Topmost="True"
         Icon="../Media/ico/Clock.ico"
         ShowInTaskbar="False"
         Title="Awake Desk" >
-    <Window.Background>
+    <!--<Window.Background>
         <ImageBrush ImageSource="../Media/img/WinTaskBar.png" Stretch="UniformToFill" />
-    </Window.Background>
-    <StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0" Name="ClockPanel" HorizontalAlignment="Right">
-                <TextBlock 
-                        x:Name="ClockTextBlock" 
-                        Text="{Binding ActualTime}" 
-                        FontSize="13"
-                        Margin="0" 
-                        Padding="0" 
-                        VerticalAlignment="Top" 
-                        HorizontalAlignment="Right"
-                        Height="40"
-                        />
-            </StackPanel>
-        </StackPanel>
+    </Window.Background>-->
+    <StackPanel Orientation="Horizontal" Margin="0" Name="ClockPanel" HorizontalAlignment="Right">
+        <Border
+            Margin="0,0,5,0">
+            <Image 
+            x:Name="ClockIcon"
+            Source="../Media/img/ClockTray.png"
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center" 
+            Width="12" 
+            Height="12">
+                <Image.ToolTip>
+                <ToolTip>
+                        <StackPanel>
+                            <TextBlock 
+                                x:Name="ClockTextBlock" 
+                                Text="{Binding ActualTime}" 
+                                FontSize="12"
+                                Margin="0" 
+                                Padding="0"/>
+                            <TextBlock 
+                                Text="{Binding ClosingTime}" 
+                                FontSize="12"
+                                Margin="0" 
+                                Padding="0"
+                                Foreground="Gray"
+                                TextAlignment="Right"/>
+                        </StackPanel>
+                </ToolTip>
+                </Image.ToolTip>
+            </Image>
+    </Border>
+       
+    </StackPanel>
 </Window>

@@ -12,16 +12,19 @@
 
   <ItemGroup>
     <None Remove="Clock.ico" />
-    <None Remove="Media\img\WinTaskBar.png" />
+    <None Remove="Media\img\ClockTray.png" />
+    <None Remove="Media\img\ClockTrayHighlighted.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Media\ico\Clock.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Media\img\WinTaskBar.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Media\img\ClockTray.png" />
+    <Resource Include="Media\img\ClockTrayHighlighted.png" />
   </ItemGroup>
 
   <ItemGroup>
