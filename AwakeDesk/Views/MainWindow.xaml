@@ -48,13 +48,13 @@
                             Header="Settings" 
                             Click="OpenSettings_Click">
                             <MenuItem.Icon>
-                                <fa:IconImage Icon="Gear" Width="16" Height="16"></fa:IconImage>
+                                <fa:IconImage Icon="Gear" Width="16" Height="16" Foreground="DarkBlue"></fa:IconImage>
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Header="Quit" 
                                   Click="QuitApplication_Click">
                             <MenuItem.Icon>
-                                <fa:IconImage Icon="PowerOff" Width="16" Height="16"></fa:IconImage>
+                                <fa:IconImage Icon="PowerOff" Width="16" Height="16" Foreground="Red"></fa:IconImage>
                             </MenuItem.Icon>
                         </MenuItem>
                     </ContextMenu>
