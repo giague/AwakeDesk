@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         xmlns:local="clr-namespace:AwakeDesk"
         mc:Ignorable="d"
         Height="18"
@@ -15,40 +16,50 @@
         Icon="../Media/ico/Clock.ico"
         ShowInTaskbar="False"
         Title="Awake Desk" >
-    <!--<Window.Background>
-        <ImageBrush ImageSource="../Media/img/WinTaskBar.png" Stretch="UniformToFill" />
-    </Window.Background>-->
     <StackPanel Orientation="Horizontal" Margin="0" Name="ClockPanel" HorizontalAlignment="Right">
         <Border
             Margin="0,0,5,0">
-            <Image 
-            x:Name="ClockIcon"
-            Source="../Media/img/ClockTray.png"
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Center" 
-            Width="12" 
-            Height="12">
+            <Image x:Name="ClockIcon"
+                    Source="../Media/img/ClockTray.png"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Width="12" 
+                    Height="12">
                 <Image.ToolTip>
-                <ToolTip>
+                    <ToolTip>
                         <StackPanel>
-                            <TextBlock 
-                                x:Name="ClockTextBlock" 
-                                Text="{Binding ActualTime}" 
-                                FontSize="12"
-                                Margin="0" 
-                                Padding="0"/>
-                            <TextBlock 
-                                Text="{Binding ClosingTime}" 
-                                FontSize="12"
-                                Margin="0" 
-                                Padding="0"
-                                Foreground="Gray"
-                                TextAlignment="Right"/>
+                            <TextBlock x:Name="ClockTextBlock" 
+                                        Text="{Binding ActualTime}" 
+                                        FontSize="12"
+                                        Margin="0" 
+                                        Padding="0"/>   
+                            <TextBlock Text="{Binding ClosingTime}" 
+                                        FontSize="12"
+                                        Margin="0" 
+                                        Padding="0"
+                                        Foreground="Gray"
+                                        TextAlignment="Right"/>
                         </StackPanel>
-                </ToolTip>
+                    </ToolTip>
                 </Image.ToolTip>
+                <Image.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="SettingContextMenuItem"
+                            Header="Settings" 
+                            Click="OpenSettings_Click">
+                            <MenuItem.Icon>
+                                <fa:IconImage Icon="Gear" Width="16" Height="16"></fa:IconImage>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Quit" 
+                                  Click="QuitApplication_Click">
+                            <MenuItem.Icon>
+                                <fa:IconImage Icon="PowerOff" Width="16" Height="16"></fa:IconImage>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </Image.ContextMenu>
             </Image>
-    </Border>
-       
+        </Border>
     </StackPanel>
 </Window>

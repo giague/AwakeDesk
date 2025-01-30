@@ -25,6 +25,8 @@ namespace AwakeDesk.Views
         private const string CLOCK_TRAY_ICON_BASE = "../Media/img/ClockTray.png";
         private const string CLOCK_TRAY_ICON_HIGHLITED = "../Media/img/ClockTrayHighlighted.png";
 
+        private SettingsWindow settingsWindow;
+        private bool isSettingWindowOpen = false;
         private string actualTime;
         private int elapsedIdle;
         private int screenSaverPreventTimeout;
@@ -37,7 +39,6 @@ namespace AwakeDesk.Views
         private System.Drawing.Size PrimaryScreenSize;
         private readonly Random rnd = new();
         private double moverDelay = 0;
-        private bool showingSettings = false;
         private MediaPlayer alarmPlayer;
         private int alarmPlayngTime = 0;
         private int alarmStartedMinute = -1;
@@ -64,16 +65,6 @@ namespace AwakeDesk.Views
                 {
                     this.DragMove();
                 }
-            };
-            this.MouseRightButtonDown += (sender, e) =>
-            {
-                showingSettings = true;
-                SettingsWindow settingsWindow = new();
-                settingsWindow.ShowDialog();
-                showingSettings = false;
-                GetAppConfig();
-                SetClosingTime();
-
             };
 
             double screenWidth = SystemParameters.PrimaryScreenWidth;
@@ -108,6 +99,33 @@ namespace AwakeDesk.Views
             var closeTimeParts = App.AwakeDeskSettings.Preset1.Split(":");
             App.AwakeVariables.ClosingDateTime = new(dataAttuale.Year, dataAttuale.Month, dataAttuale.Day, int.Parse(closeTimeParts[0]), int.Parse(closeTimeParts[1]), 0, DateTimeKind.Local);
             SetClosingTime();
+        }
+
+        private void OpenSettings_Click(object sender, RoutedEventArgs e)
+        {
+            if (!IsSettingWindowOpen)
+            {
+                IsSettingWindowOpen = true;
+                settingsWindow = new();
+                settingsWindow.Show();
+                settingsWindow.WindowClosed += SettingsWindow_WindowClosed;
+
+            }
+        }
+        private void SettingsWindow_WindowClosed(object sender, EventArgs e)
+        {
+            IsSettingWindowOpen = false;
+            GetAppConfig();
+            SetClosingTime();
+        }
+
+        private void QuitApplication_Click(object sender, RoutedEventArgs e)
+        {
+            var confirmWindow = new ConfirmWindow();
+            if (confirmWindow.ShowDialog().GetValueOrDefault())
+            {
+                Application.Current.Shutdown();
+            }
         }
 
         private void CalculateScreenSaverPreventTimeout()
@@ -168,11 +186,8 @@ namespace AwakeDesk.Views
         private void MainTimer_Tick(object? sender, EventArgs e)
         {
             ActualTime = DateTime.Now.ToString(ACTUAL_TIME_FORMAT);
-            if (!showingSettings)
-            {
-                this.Topmost = false;
-                this.Topmost = true;
-            }
+
+            AwakeDeskHelpers.MakeWindowAlwaysOnTop(this);
 
             if (elapsedIdle >= screenSaverPreventTimeout && !moveTimer.IsEnabled)
             {
@@ -266,6 +281,15 @@ namespace AwakeDesk.Views
                     App.AwakeVariables.ClosingTime = value;
                     OnPropertyChanged(nameof(ClosingTime));
                 }
+            }
+        }
+
+        public bool IsSettingWindowOpen
+        {
+            get => isSettingWindowOpen; set
+            {
+                isSettingWindowOpen = value;
+                SettingContextMenuItem.IsEnabled = !isSettingWindowOpen;
             }
         }
         #endregion

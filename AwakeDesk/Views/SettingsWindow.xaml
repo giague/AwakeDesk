@@ -3,16 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         xmlns:local="clr-namespace:AwakeDesk"
+        xmlns:localViews="clr-namespace:AwakeDesk.Views"
         mc:Ignorable="d"
         Title="Awake Desk Settings" 
-        Height="325"
-        Width="225"
+        Height="370"
+        Width="550"
         ResizeMode="NoResize" 
-        WindowStyle="SingleBorderWindow" 
+        WindowStyle="none" 
         Icon="/Media/ico/Clock.ico"
         WindowStartupLocation="CenterScreen"
-        ShowInTaskbar="False">
+        AllowsTransparency="True"
+        Background="Transparent">
     <Window.Resources>
         <Style x:Key="CacthButtonVisibiliyStyle" TargetType="Button">
             <Style.Triggers>
@@ -29,243 +32,525 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Border CornerRadius="20">
-        <StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0" Name="ClockPanel">
-                <TextBlock 
-                        x:Name="SoftwareName" 
-                        Text="Awake Desk" 
-                        FontSize="15"
-                        FontWeight="Bold"
-                        Margin="10,5,3,5" 
-                        Padding="0" 
-                        VerticalAlignment="Top" />
-                <TextBlock 
-                        Text="v." 
-                        FontSize="12"
-                        Margin="5,5,0,5" 
-                        Padding="0" 
-                        VerticalAlignment="Bottom" />
-                <TextBlock 
-                        x:Name="SoftwareVersion" 
-                        Text="1.0.0.123" 
-                        FontSize="12"
-                        Margin="0,5,3,5" 
-                        Padding="0" 
-                        VerticalAlignment="Bottom" />
-            </StackPanel>
-            <StackPanel Name="panelSettings" Height="232">
-                <TabControl>
-                    <!-- Time tab -->
-                    <TabItem Header="Time">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="5,10,5,0" Height="150">
-                                <StackPanel Width="92"
+    <Border CornerRadius="10"
+            BorderThickness="1"
+            Opacity="0.95">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"></GradientStop>
+                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"></GradientStop>
+                <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"></GradientStop>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Border.Background>
+            <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"></GradientStop>
+                <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="0.3"></GradientStop>
+                <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0.6"></GradientStop>
+                <GradientStop Color="{StaticResource primaryBackColor2}" Offset="1"></GradientStop>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <!--Control bar-->
+                <RowDefinition Height="25"/>
+                <!--Window content-->
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!--Control bar-->
+            <Border Grid.Row="0"
+                    CornerRadius="10,10,0,0"
+                    MouseLeftButtonDown="ControlBar_MouseLeftButtonDown">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"></GradientStop>
+                        <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"></GradientStop>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid x:Name="grdControlBar"
+                      >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                
+                    <StackPanel Grid.Column="0"
+                                 Orientation="Horizontal"
+                                 Height="25"
+                                 Margin="15,0,0,0"
+                                 VerticalAlignment="Center"
+                                 FlowDirection="LeftToRight"
+                                 HorizontalAlignment="Left" Width="151">
+                        <Image Source="/Media/img/Clock_512.png" Width="15" Height="15" ></Image>
+                        <TextBlock Foreground="{StaticResource titleColor2}"
+                                     x:Name="SoftwareName" 
+                                     Text="Awake Desk" 
+                                     FontSize="15"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"
+                                     Margin="5,0,0,0" 
+                                     VerticalAlignment="Center" />
+                        <TextBlock Foreground="{StaticResource titleColor2}"
+                                     Text="v." 
+                                     FontSize="12"
+                        
+                                     FontFamily="Montserrat"
+                                     Margin="5,0,0,4" 
+                                     Padding="0" 
+                                     VerticalAlignment="Bottom" />
+                        <TextBlock Foreground="{StaticResource titleColor2}"
+                                     x:Name="SoftwareVersion" 
+                                     Text="1.0" 
+                                     FontSize="12"
+                                     FontFamily="Montserrat"
+                                     Margin="0,0,0,4" 
+                                     Padding="0" 
+                                     VerticalAlignment="Bottom" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1"
+                                Orientation="Horizontal"
+                                FlowDirection="RightToLeft"
+                                Background="Transparent"
+                                Margin="0,0,5,0">
+                        <Button x:Name="btnClose"
+                                Style="{StaticResource controlButton}"
+                                Tag="{StaticResource color4}"
+                                Click="btnClose_Click">
+                            <fa:IconImage Icon="Xmark" Style="{StaticResource controlButtonIcon}"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!--Window content-->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="225"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Menu-->
+                <Border Grid.Column="0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Margin="35,20,35,10">
+                            <TextBlock  Foreground="{StaticResource titleColor3}"
+                                        FontSize="16"
+                                        FontFamily="Montserrat"
+                                        FontWeight="Medium"
+                                        VerticalAlignment="Center"
+                                        Text="Close time" 
+                                        Margin="0"/>            
+                            <TextBlock Foreground="{StaticResource titleColor3}"
+                                        FontSize="16"
+                                        FontFamily="Montserrat"
+                                        FontWeight="Medium"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding ClosingTime}" 
+                                        Margin="5,0,0,0"/>
+                        </StackPanel>
+                        <!--Menu voices-->
+                        <RadioButton Style="{StaticResource menuButton}"
+                                Command="{Binding ShowTimePanelCommand}"
+                                Tag="{StaticResource color1}"
+                                IsChecked="True">
+                            <StackPanel Orientation="Horizontal">
+                                <fa:IconImage Icon="Clock" Style="{StaticResource menuButtonIcon}"></fa:IconImage>
+                                <TextBlock Text="Time" Style="{StaticResource menuButtonText}" />
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource menuButton}"
+                                Command="{Binding ShowSettingsPanelCommand}"
+                                Tag="{StaticResource color2}">
+                            <StackPanel Orientation="Horizontal">
+                                <fa:IconImage Icon="Gear" Style="{StaticResource menuButtonIcon}"></fa:IconImage>
+                                <TextBlock Text="Settings" Style="{StaticResource menuButtonText}" />
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource menuButton}"
+                                Command="{Binding ShowCreditsPanelCommand}"
+                                Tag="{StaticResource color3}">
+                            <StackPanel Orientation="Horizontal">
+                                <fa:IconImage Icon="Info" Style="{StaticResource menuButtonIcon}"></fa:IconImage>
+                                <TextBlock Text="Credits" Style="{StaticResource menuButtonText}" />
+                            </StackPanel>
+                        </RadioButton>
+                    </StackPanel>
+                </Border>
+
+                <!--Content-->
+                <Border Grid.Column="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <!--Header / Caption-->
+                            <RowDefinition Height="40"/>
+                            <!--Content section / Child views-->
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+
+                        <!--Header / Caption-->
+                        <StackPanel Grid.Row="0"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Top"
+                                    Margin="0,20,0,0">
+                            <fa:IconImage Icon="{Binding PanelIcon}"
+                                            Height="20"
+                                            Width="20"
+                                            Foreground="{StaticResource titleColor2}"
+                                            Margin="35,0,10,0"/>
+                            <TextBlock Text="{Binding Caption}"
+                                        Foreground="{StaticResource titleColor2}"
+                                        FontSize="20"
+                                        FontFamily="Montserrat"
+                                        FontWeight="Medium"
+                                        VerticalAlignment="Center"/>
+                        </StackPanel>
+
+
+                        <StackPanel Grid.Row="1">
+                            <!-- Time content -->
+                            <StackPanel x:Name="pnlTime"
+                                    Margin="30,0,30,0" >
+                                <StackPanel Orientation="Horizontal" 
+                                        Margin="5,10,5,0">
+                                    <StackPanel Width="120"
                                             Margin="0,0,10,0">
-                                    <Button Click="AddRemoveTime_Click"
-                                        Background="LightCoral" 
-                                        Foreground="White"
-                                        FontWeight="Bold"
-                                        Height="25" Name="Minus1Hour" 
-                                        Content="-1 Hour" 
-                                        Margin="0,0,0,0"/>
-                                    <Button Click="AddRemoveTime_Click"
-                                        Background="LightCoral" 
-                                        Foreground="White"
-                                        FontWeight="Bold"
-                                        Height="25" 
-                                        Name="Minus5Minutes" 
-                                        Content="-5 Minutes" 
-                                        Margin="0,5,0,0"/>
-                                    <Button Click="AddRemoveTime_Click" 
-                                        Background="LightCoral" 
-                                        Foreground="White"
-                                        FontWeight="Bold"
-                                        Height="25" 
-                                        Name="Minus1Minute" 
-                                        Content="-1 Minute" 
-                                        Margin="0,5,0,0"/>
-                                    <Button 
-                                        Click="Preset_Click" 
-                                        Background="LightBlue" 
-                                        FontWeight="Bold"
-                                        Name="Preset1" 
-                                        Height="25" 
-                                        Content="{Binding Preset1Text}" 
-                                        Margin="0,5,0,0"/>
+                                        <Button Click="AddRemoveTime_Click"
+                                            Style="{StaticResource presetButton}"
+                                            Tag="{StaticResource buttonMinusColor}"
+                                            FontWeight="Bold"
+                                            Height="45" 
+                                            Name="Minus1Hour"
+                                            Margin="0,0,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <fa:IconImage Icon="minus" Style="{StaticResource presetButtonIcon}"/>
+                                                <TextBlock Text="1 Hour" Style="{StaticResource presetButtonText}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Click="AddRemoveTime_Click"
+                                            Style="{StaticResource presetButton}"
+                                            Tag="{StaticResource buttonMinusColor}"
+                                            FontWeight="Bold"
+                                            Height="45" 
+                                            Name="Minus5Minutes"
+                                            Margin="0,0,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <fa:IconImage Icon="minus" Style="{StaticResource presetButtonIcon}"/>
+                                                <TextBlock Text="5 Minutes" Style="{StaticResource presetButtonText}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Click="AddRemoveTime_Click"
+                                            Style="{StaticResource presetButton}"
+                                            Tag="{StaticResource buttonMinusColor}"
+                                            FontWeight="Bold"
+                                            Height="45" 
+                                            Name="Minus1Minute"
+                                            Margin="0,0,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <fa:IconImage Icon="minus" Style="{StaticResource presetButtonIcon}"/>
+                                                <TextBlock Text="1 Minute" Style="{StaticResource presetButtonText}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Click="Preset_Click"
+                                            Style="{StaticResource presetButton}"
+                                            Tag="{StaticResource buttonPresetColor}"
+                                            FontWeight="Bold"
+                                            Height="45" 
+                                            Name="Preset1"
+                                            Margin="0,0,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <fa:IconImage Icon="Clock" Style="{StaticResource presetButtonIcon}"/>
+                                                <TextBlock Text="{Binding Preset1Text}" Style="{StaticResource presetButtonText}"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                    <StackPanel Margin="0" Width="120">
+                                        <Button Click="AddRemoveTime_Click"
+                                            Style="{StaticResource presetButton}"
+                                            Tag="{StaticResource buttonPlusColor}"
+                                            FontWeight="Bold"
+                                            Height="45" 
+                                            Name="Plus1Hour"
+                                            Margin="0,0,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <fa:IconImage Icon="plus" Style="{StaticResource presetButtonIcon}"/>
+                                                <TextBlock Text="1 Hour" Style="{StaticResource presetButtonText}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Click="AddRemoveTime_Click"
+                                                    Style="{StaticResource presetButton}"
+                                                    Tag="{StaticResource buttonPlusColor}"
+                                                    FontWeight="Bold"
+                                                    Height="45" 
+                                                    Name="Plus5Minutes"
+                                                    Margin="0,0,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <fa:IconImage Icon="plus" Style="{StaticResource presetButtonIcon}"/>
+                                                <TextBlock Text="5 Minutes" Style="{StaticResource presetButtonText}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Click="AddRemoveTime_Click"
+                                                    Style="{StaticResource presetButton}"
+                                                    Tag="{StaticResource buttonPlusColor}"
+                                                    FontWeight="Bold"
+                                                    Height="45" 
+                                                    Name="Plus1Minute"
+                                                    Margin="0,0,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <fa:IconImage Icon="plus" Style="{StaticResource presetButtonIcon}"/>
+                                                <TextBlock Text="1 Minute" Style="{StaticResource presetButtonText}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Click="Preset_Click"
+                                                    Style="{StaticResource presetButton}"
+                                                    Tag="{StaticResource buttonPresetColor}"
+                                                    FontWeight="Bold"
+                                                    Height="45" 
+                                                    Name="Preset2"
+                                                    Margin="0,0,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <fa:IconImage Icon="Clock" Style="{StaticResource presetButtonIcon}"/>
+                                                <TextBlock Text="{Binding Preset2Text}" Style="{StaticResource presetButtonText}"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
                                 </StackPanel>
-                                <StackPanel Margin="0" Width="92">
-                                    <Button Click="AddRemoveTime_Click"
-                                        Height="25"
-                                        Background="LightGreen" 
-                                        FontWeight="Bold"
-                                        Name="Plus1Hour" 
-                                        Content="+1 Hour" 
-                                        Margin="0,0,0,0"/>
-                                    <Button Click="AddRemoveTime_Click" 
-                                        Height="25" 
-                                        Background="LightGreen" 
-                                        FontWeight="Bold"
-                                        Name="Plus5Minutes" 
-                                        Content="+5 Minutes" 
-                                        Margin="0,5,0,0"/>
-                                    <Button Click="AddRemoveTime_Click" 
-                                        Height="25" 
-                                        Background="LightGreen" 
-                                        FontWeight="Bold"
-                                        Name="Plus1Minute" 
-                                        Content="+1 Minute" 
-                                        Margin="0,5,0,0"/>
-                                    <Button Click="Preset_Click" 
-                                        Background="LightBlue" 
-                                        FontWeight="Bold"
-                                        Name="Preset2" 
-                                        Height="25" 
-                                        Content="{Binding Preset2Text}" 
-                                        Margin="0,5,0,0"/>
-                                </StackPanel>
+
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="5,0,0,10">
-                                <TextBlock Text="Stop time:" FontSize="15" Margin="0" VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding ClosingTime}" FontSize="35" FontWeight="Bold" Margin="5,0,0,0"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </TabItem>
-                    <!-- Settings Tab-->
-                    <TabItem Header="Settings">
-                        <StackPanel Height="210">
-                            <Button Click="CaptureMouse_Click"
-                                x:Name="CaptureMouseButton"
-                                Content="Select mouse starting point"
-                                Height="35"
-                                FontSize="12"
-                                FontWeight="Bold"
-                                Background="LightBlue"
-                                Visibility="Visible" />
-                            <TextBlock Text="{Binding CaptureMouseText}"
-                                   x:Name="CaptureMouseTextBlock"
-                                   TextWrapping="Wrap"
-                                   FontSize="13"
-                                   TextAlignment="Center"
-                                   Height="35"
-                                   Visibility="Collapsed"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,5">
-                                <TextBlock 
-                                    VerticalAlignment="Top" 
-                                    Text="Alarm Delay Minutes:" />
-                                <TextBox 
-                                        x:Name="AlarmDelayMinutesSetting" 
-                                        Width="20"
-                                        VerticalAlignment="Top"
-                                        Margin="3,0"
-                                        LostFocus="Settings_LostFocus" />
-                                <TextBlock 
-                                        x:Name="AlarmDelayMinutesError" 
-                                        VerticalAlignment="Top"
-                                        Foreground="Red" 
-                                        FontSize="9"
-                                        Visibility="Collapsed" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,5">
-                                <TextBlock 
-                                    VerticalAlignment="Top" 
-                                    Text="Preset 1:" />
-                                <TextBox 
-                                    x:Name="Preset1Setting" 
-                                    Width="40"
-                                    VerticalAlignment="Top"
-                                    Margin="3,0"
-                                    LostFocus="Settings_LostFocus" />
-                                <TextBlock 
-                                    x:Name="Preset1Error" 
-                                    VerticalAlignment="Top"
-                                    Foreground="Red" 
-                                    FontSize="9"
-                                    Visibility="Collapsed" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,5">
-                                <TextBlock 
-                                    VerticalAlignment="Top" 
-                                    Text="Preset 2:" />
-                                <TextBox 
-                                    x:Name="Preset2Setting" 
-                                    Width="40"
-                                    VerticalAlignment="Top"
-                                    Margin="3,0"
-                                    LostFocus="Settings_LostFocus" />
-                                <TextBlock 
-                                    x:Name="Preset2Error" 
-                                    VerticalAlignment="Top"
-                                    Foreground="Red" 
-                                    FontSize="9"
-                                    Visibility="Collapsed" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,5">
-                                <TextBlock 
-                                    VerticalAlignment="Top" 
-                                    Text="Alarm:" />
-                                <ComboBox 
-                                        x:Name="RingtoneComboBox" 
-                                        Width="100" 
-                                        VerticalAlignment="Top" 
-                                        Margin="15,0,5,0" 
-                                        SelectionChanged="RingtoneComboBox_SelectionChanged" />
-                                <Button x:Name="PlayPauseButton" 
-                                        Width="20" 
-                                        Height="22" 
-                                        Content="▶"
-                                        FontSize="12"
-                                        Foreground="Green"
-                                        Click="PlayPauseButton_Click" />
-                            </StackPanel>
-                            <Button Click="SaveSettings_Click"
+
+                            <!-- Settings Tab-->
+                            <StackPanel x:Name="pnlSettings"
+                                    Margin="30,0,30,0"
+                                    Height="310">
+                                <Button Click="CaptureMouse_Click"
+                                    x:Name="CaptureMouseButton"
+                                    Style="{StaticResource presetButton}"
+                                    Tag="{StaticResource buttonPresetColor}"
                                     FontWeight="Bold"
-                                    Height="25" 
-                                    Name="SaveSettings" 
-                                    Content="Save Settings" 
-                                    Margin="0"
-                                    Background="LightGreen" 
-                                    IsEnabled="{Binding AreSettingsValid}"/>
+                                    Height="45" 
+                                    Margin="0,0,0,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa:IconImage Icon="Mouse" Style="{StaticResource presetButtonIcon}"/>
+                                        <TextBlock Text="Select mouse starting point" Style="{StaticResource presetButtonText}"/>
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock Text="{Binding CaptureMouseText}"
+                   Foreground="{StaticResource plainTextColor1}"
+                   x:Name="CaptureMouseTextBlock"
+                   TextWrapping="Wrap"
+                   FontSize="13"
+                   TextAlignment="Center"
+                   Height="35"
+                   Visibility="Collapsed"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Foreground="{StaticResource plainTextColor1}"
+                                           VerticalAlignment="Top" 
+                                           Text="Alarm Delay Minutes:"
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           FontFamily="Montserrat"                             
+                                           Margin="0,10,5,0"/>
+                                    <TextBox x:Name="AlarmDelayMinutesSetting" 
+                                        Width="32"
+                                        VerticalAlignment="Top"
+                                        LostFocus="Settings_LostFocus"
+                                        FontSize="14"
+                                        FontWeight="Medium"
+                                        FontFamily="Montserrat"                            
+                                        Foreground="{StaticResource plainTextColor3}"
+                                        CaretBrush="LightGray"
+                                        BorderBrush="DarkGray"
+                                        BorderThickness="0,0,0,2"
+                                        Height="40"
+                                        VerticalContentAlignment="Center"
+                                        MaxLength="2"
+                                        Margin="0"
+                                        Padding="5,0"/>
+                                    <TextBlock Foreground="{StaticResource errorTextColor}"
+                                           x:Name="AlarmDelayMinutesError" 
+                                           VerticalAlignment="Top" 
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           FontFamily="Montserrat"                             
+                                           Margin="5,10,5,0"
+                                           Visibility="Collapsed" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Foreground="{StaticResource plainTextColor1}"
+                                           VerticalAlignment="Top" 
+                                           Text="Preset 1:"
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           FontFamily="Montserrat"                             
+                                           Margin="0,10,7,0"/>
+                                    <TextBox x:Name="Preset1Setting" 
+                                            Width="47"
+                                            VerticalAlignment="Top"
+                                            LostFocus="Settings_LostFocus"
+                                            FontSize="14"
+                                            FontWeight="Medium"
+                                            FontFamily="Montserrat"                            
+                                            Foreground="{StaticResource plainTextColor3}"
+                                            CaretBrush="LightGray"
+                                            BorderBrush="DarkGray"
+                                            BorderThickness="0,0,0,2"
+                                            Height="40"
+                                            VerticalContentAlignment="Center"
+                                            Margin="0"
+                                            Padding="5,0"
+                                            MaxLength="5"/>
+                                    <TextBlock Foreground="{StaticResource errorTextColor}"
+                                           x:Name="Preset1Error" 
+                                           VerticalAlignment="Top" 
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           FontFamily="Montserrat"                             
+                                           Margin="5,10,5,0"
+                                           Visibility="Collapsed" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Foreground="{StaticResource plainTextColor1}"
+                                           VerticalAlignment="Top" 
+                                           Text="Preset 2:"
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           FontFamily="Montserrat"                             
+                                           Margin="0,10,5,0"/>
+                                    <TextBox x:Name="Preset2Setting"
+                                            Width="47"
+                                            VerticalAlignment="Top"
+                                            LostFocus="Settings_LostFocus"
+                                            FontSize="14"
+                                            FontWeight="Medium"
+                                            FontFamily="Montserrat"                            
+                                            Foreground="{StaticResource plainTextColor3}"
+                                            CaretBrush="LightGray"
+                                            BorderBrush="DarkGray"
+                                            BorderThickness="0,0,0,2"
+                                            Height="40"
+                                            VerticalContentAlignment="Center"
+                                            Margin="0"
+                                            Padding="5,0"
+                                            MaxLength="5"/>
+                                    <TextBlock Foreground="{StaticResource errorTextColor}"
+                                           x:Name="Preset2Error" 
+                                           VerticalAlignment="Top" 
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           FontFamily="Montserrat"                             
+                                           Margin="5,10,5,0"
+                                           Visibility="Collapsed" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Foreground="{StaticResource plainTextColor1}"
+                                           VerticalAlignment="Top" 
+                                           Text="Alarm:"
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           FontFamily="Montserrat"                             
+                                           Margin="0,10,18,0"/>
+                                    <ComboBox x:Name="RingtoneComboBox" 
+                                            Width="130" 
+                                            VerticalAlignment="Top"
+                                            LostFocus="Settings_LostFocus"
+                                            FontSize="14"
+                                            FontWeight="Medium"
+                                            FontFamily="Montserrat"                            
+                                            Foreground="{StaticResource plainTextColor3}"
+                                            BorderBrush="DarkGray"
+                                            BorderThickness="0,0,0,2"
+                                            Height="40"
+                                            VerticalContentAlignment="Center"
+                                            Margin="0"
+                                            Padding="5,0"
+                                            SelectionChanged="RingtoneComboBox_SelectionChanged" />
+                                    <Button x:Name="PlayPauseButton" 
+                                        Style="{StaticResource presetButton}"
+                                        Tag="{StaticResource buttonPresetColor}"
+                                        Width="30"
+                                        FontSize="12"
+                                        Margin="10,0,0,0"
+                                        Click="PlayPauseButton_Click" >
+                                        <StackPanel Orientation="Horizontal">
+                                            <fa:IconImage x:Name="PlayPauseIcon" Icon="Play" Style="{StaticResource presetButtonIcon}" Margin="5"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                                <Button Click="SaveSettings_Click"
+                                    x:Name="SaveSettings"
+                                    Style="{StaticResource presetButton}"
+                                    Tag="{StaticResource buttonPlusColor}"
+                                    FontWeight="Bold"
+                                    Height="45" 
+                                    Margin="0,0,0,0"
+                                    IsEnabled="{Binding AreSettingsValid}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa:IconImage Icon="Save" Style="{StaticResource presetButtonIcon}"/>
+                                        <TextBlock Text="Save Settings" Style="{StaticResource presetButtonText}"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+
+                            <!-- Credits Tab-->
+                            <StackPanel x:Name="pnlCredits"
+                                    Margin="35,0,10,0"
+                                    Height="250">
+                                <StackPanel Orientation="Horizontal" Margin="5">
+                                    <TextBlock Foreground="{StaticResource plainTextColor1}"
+                                               FontSize="12" 
+                                               FontWeight="Bold" 
+                                               Text="Developed by:" 
+                                               Margin="0,0,5,0"/>
+                                    <TextBlock Foreground="{StaticResource plainTextColor2}"
+                                               FontSize="12" 
+                                               Margin="0">Giovanni Guerra</TextBlock>
+                                </StackPanel>
+                                <StackPanel Margin="5,0,5,5">
+                                    <TextBlock Foreground="{StaticResource plainTextColor1}"
+                                               FontSize="12" 
+                                               FontWeight="Bold" 
+                                               Text="License" 
+                                               Margin="0"/>
+                                    <TextBlock Foreground="{StaticResource plainTextColor2}"
+                                               FontSize="11" 
+                                               TextWrapping="Wrap" 
+                                               Margin="0">This software is distributed under the GNU General Public License v3.0.</TextBlock>
+                                </StackPanel>
+                                <StackPanel Margin="5,0,5,5">
+                                    <TextBlock Foreground="{StaticResource plainTextColor1}"
+                                               FontSize="12" 
+                                               FontWeight="Bold" 
+                                               Text="Useful Links" 
+                                               Margin="0,0,0,2"/>
+                                    <TextBlock 
+                                               Foreground="{StaticResource plainTextColor2}"
+                                               FontSize="11" 
+                                               TextWrapping="Wrap" 
+                                               Margin="0,0,0,2"><Hyperlink NavigateUri="https://github.com/giague/AwakeDesk" RequestNavigate="Hyperlink_RequestNavigate">GitHub repository</Hyperlink>
+                                    </TextBlock>
+                                </StackPanel>
+                                <StackPanel Margin="5,0,5,5">
+                                    <TextBlock Foreground="{StaticResource plainTextColor1}"
+                                               FontSize="12" 
+                                               FontWeight="Bold" 
+                                               Text="Support" 
+                                               Margin="0"/>
+                                    <TextBlock Foreground="{StaticResource plainTextColor2}"
+                                               FontSize="11" 
+                                               TextWrapping="Wrap" 
+                                               Margin="0">To report bugs or request assistance, open a issue: <Hyperlink NavigateUri="https://github.com/giague/AwakeDesk/issues" RequestNavigate="Hyperlink_RequestNavigate">GitHub issue</Hyperlink>
+                                    </TextBlock>
+                                </StackPanel>
+                            </StackPanel>
                         </StackPanel>
-                    </TabItem>
-                    <!-- Info Tab-->
-                    <TabItem Header="Info">
-                        <StackPanel Height="210">
-                            <StackPanel Orientation="Horizontal" Margin="5">
-                                <TextBlock FontSize="12" FontWeight="Bold" Text="Developed by:" Margin="0,0,5,0"/>
-                                <TextBlock FontSize="12" Margin="0">Giovanni Guerra</TextBlock>
-                            </StackPanel>
-                            <StackPanel Margin="5,0,5,5">
-                                <TextBlock FontSize="12" FontWeight="Bold" Text="License" Margin="0"/>
-                                <TextBlock FontSize="11" TextWrapping="Wrap" Margin="0">
-                                This software is distributed under the GNU General Public License v3.0.
-                                </TextBlock>
-                            </StackPanel>
-                            <StackPanel Margin="5,0,5,5">
-                                <TextBlock FontSize="12" FontWeight="Bold" Text="Useful Links" Margin="0,0,0,2"/>
-                                <TextBlock FontSize="11" TextWrapping="Wrap" Margin="0,0,0,2">
-                                <Hyperlink NavigateUri="https://github.com/giague/AwakeDesk" RequestNavigate="Hyperlink_RequestNavigate">GitHub repository</Hyperlink>
-                                </TextBlock>
-                            </StackPanel>
-                            <StackPanel Margin="5,0,5,5">
-                                <TextBlock FontSize="12" FontWeight="Bold" Text="Support" Margin="0"/>
-                                <TextBlock FontSize="11" TextWrapping="Wrap" Margin="0">
-                                    To report bugs or request assistance, open a issue:
-                                    <Hyperlink NavigateUri="https://github.com/giague/AwakeDesk/issues" RequestNavigate="Hyperlink_RequestNavigate">GitHub issue</Hyperlink>
-                                </TextBlock>
-                            </StackPanel>
-                        </StackPanel>
-                    </TabItem>
-                </TabControl>
-            </StackPanel>
-            <Button Click="CloseApplication_Click"
-                Background="Red" 
-                Foreground="White"
-                FontWeight="Bold"
-                Height="25" 
-                Name="Close" 
-                Content="CLOSE AWAKE DESK" 
-                Margin="0"/>
-        </StackPanel>
+                    </Grid>
+                </Border>
+
+
+            </Grid>
+        </Grid>
     </Border>
 </Window>

@@ -12,11 +12,20 @@ using AwakeDesk.Models;
 using AwakeDesk.Helpers;
 using System.Diagnostics;
 using System.Windows.Navigation;
+using FontAwesome.Sharp;
 
 namespace AwakeDesk.Views
 {
     public partial class SettingsWindow : Window, INotifyPropertyChanged
     {
+        private const string PANEL_TIME = "TIME";
+        private const string PANEL_SETTINGS = "SETTINGS";
+        private const string PANEL_CREDITS = "INFO";
+
+        private string _currentSettingPanel;
+        private string _caption;
+        private IconChar _panelIcon;
+
         private bool capturingMouse = false;
         private int catchCoundDownCounter = 3;
         private string captureMouseText = string.Empty;
@@ -26,11 +35,20 @@ namespace AwakeDesk.Views
         private readonly DispatcherTimer mouseCaptureTimer;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler WindowClosed;
 
         public SettingsWindow()
         {
             InitializeComponent();
             DataContext = this;
+            //Initialize commands
+            ShowTimePanelCommand = new ViewModelCommand(ExecuteShowTimePanelCommand);
+            ShowSettingsPanelCommand = new ViewModelCommand(ExecuteShowSettingsPanelCommand);
+            ShowCreditsPanelCommand = new ViewModelCommand(ExecuteShowCretitsPanelCommand);
+
+            //Default panel
+            ExecuteShowTimePanelCommand(null);
+
             SoftwareVersion.Text = App.AwakeDeskSettings.CurrentVersion;
             AlarmDelayMinutesSetting.Text = App.AwakeDeskSettings.AlarmDelayMinutes.ToString();
             Preset1Setting.Text = App.AwakeDeskSettings.Preset1;
@@ -61,19 +79,31 @@ namespace AwakeDesk.Views
 
         private void CheckSettings()
         {
-            AreSettingsValid = IsAlarmDelayMinutesValid()
-                                && CheckPreset(Preset1Setting, Preset1Error)
-                                && CheckPreset(Preset2Setting, Preset2Error)
-                                && RingtoneComboBox.SelectedItem != null;
+            var alarmDelayValid = IsAlarmDelayMinutesValid();
+            var preset1Valid = CheckPreset(Preset1Setting, Preset1Error);
+            var preset2Valid = CheckPreset(Preset2Setting, Preset2Error);
+            var ringValid = RingtoneComboBox.SelectedItem != null;
+            AreSettingsValid = alarmDelayValid
+                                && preset1Valid
+                                && preset2Valid
+                                && ringValid;
         }
 
-        private void CloseSettings()
+        private void CloseWindow()
         {
             if (isDemoPlaying)
             {
                 demoPlayer.Stop();
             }
             this.Close();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            // Scatena l'evento quando la finestra viene chiusa
+            WindowClosed?.Invoke(this, EventArgs.Empty);
         }
 
         private void DemoPlayerToggle()
@@ -84,7 +114,7 @@ namespace AwakeDesk.Views
                 return;
             }
             isDemoPlaying = false;
-            PlayPauseButton.Content = "▶";
+            PlayPauseIcon.Icon = IconChar.Play;
             demoPlayer.Stop();
         }
 
@@ -122,7 +152,7 @@ namespace AwakeDesk.Views
         private void StartDemoPlayer()
         {
             isDemoPlaying = true;
-            PlayPauseButton.Content = "⏸";
+            PlayPauseIcon.Icon = IconChar.Pause;
             demoPlayer = new();
             demoPlayer.Open(new Uri(((RingtoneItem)RingtoneComboBox.SelectedItem).Path, UriKind.RelativeOrAbsolute));
             demoPlayer.Play();
@@ -169,25 +199,15 @@ namespace AwakeDesk.Views
             CapturingMouse = true;
         }
 
-        private void CloseApplication_Click(object sender, RoutedEventArgs e)
-        {
-            var result = MessageBox.Show(
-                "Are you sure to close Awake Desk?",
-                "Confirm Action",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question
-            );
-
-            if (result == MessageBoxResult.Yes)
-            {
-                Application.Current.Shutdown();
-            }
-        }
-
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
             e.Handled = true;
+        }
+
+        private void ControlBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
 
         private void Preset_Click(object sender, RoutedEventArgs e)
@@ -243,7 +263,7 @@ namespace AwakeDesk.Views
             App.AwakeDeskSettings.Preset2 = Preset2Setting.Text;
             App.AwakeDeskSettings.ActiveAlarmRingtone = ((RingtoneItem)RingtoneComboBox.SelectedItem).Path;
             App.AwakeDeskSettings.SaveConfiguration();
-            CloseSettings();
+            CloseWindow();
         }
 
         private void Settings_GotFocus(object sender, RoutedEventArgs e)
@@ -331,7 +351,7 @@ namespace AwakeDesk.Views
                 }
             }
         }
-        
+
         public bool CapturingMouse
         {
             get { return capturingMouse; }
@@ -345,7 +365,7 @@ namespace AwakeDesk.Views
                 }
             }
         }
-        
+
         public string ClosingTime
         {
             get { return App.AwakeVariables.ClosingTime; }
@@ -384,7 +404,73 @@ namespace AwakeDesk.Views
                 }
             }
         }
-       
+
+        public string CurrentSettingPanel
+        {
+            get => _currentSettingPanel;
+            set
+            {
+                _currentSettingPanel = value;
+                pnlTime.Visibility = (_currentSettingPanel == PANEL_TIME) ? Visibility.Visible : Visibility.Collapsed;
+                pnlSettings.Visibility = (_currentSettingPanel == PANEL_SETTINGS) ? Visibility.Visible : Visibility.Collapsed;
+                pnlCredits.Visibility = (_currentSettingPanel == PANEL_CREDITS) ? Visibility.Visible : Visibility.Collapsed;
+                OnPropertyChanged(nameof(CurrentSettingPanel));
+            }
+        }
+        public string Caption
+        {
+            get => _caption;
+            set
+            {
+                _caption = value;
+                OnPropertyChanged(nameof(Caption));
+            }
+        }
+        public IconChar PanelIcon
+        {
+            get => _panelIcon; set
+            {
+                _panelIcon = value;
+                OnPropertyChanged(nameof(PanelIcon));
+            }
+        }
+
         #endregion
+
+        #region Commands
+        public ICommand ShowTimePanelCommand { get; }
+        public ICommand ShowSettingsPanelCommand { get; }
+        public ICommand ShowCreditsPanelCommand { get; }
+
+        private void ExecuteShowTimePanelCommand(object obj)
+        {
+            CurrentSettingPanel = PANEL_TIME;
+            Caption = "Time";
+            PanelIcon = IconChar.Clock;
+        }
+        private void ExecuteShowSettingsPanelCommand(object obj)
+        {
+            CurrentSettingPanel = PANEL_SETTINGS;
+            Caption = "Settings";
+            PanelIcon = IconChar.Gear;
+        }
+        private void ExecuteShowCretitsPanelCommand(object obj)
+        {
+            CurrentSettingPanel = PANEL_CREDITS;
+            Caption = "Credits";
+            PanelIcon = IconChar.Info;
+        }
+
+        #endregion
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            CloseWindow();
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
