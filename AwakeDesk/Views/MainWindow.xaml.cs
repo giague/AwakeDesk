@@ -13,6 +13,7 @@ using AwakeDesk.Models;
 using AwakeDesk.Helpers;
 using System.Text;
 using System.Windows.Media.Imaging;
+using System.Diagnostics;
 
 namespace AwakeDesk.Views
 {
@@ -44,6 +45,7 @@ namespace AwakeDesk.Views
         private int alarmStartedMinute = -1;
         private bool isClockIconLighting = false;
         private bool isClockIconHighlighted;
+        private DateTime lastOnTopForcing;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -51,7 +53,7 @@ namespace AwakeDesk.Views
         {
             InitializeComponent();
             isClockIconHighlighted = false;
-
+            lastOnTopForcing = DateTime.Now.AddMinutes(-1);
             AwakeDeskHelpers.MakeWindowAlwaysOnTop(this);
             DataContext = this;
             this.MouseLeftButtonDown += (sender, e) =>
@@ -117,6 +119,7 @@ namespace AwakeDesk.Views
             IsSettingWindowOpen = false;
             GetAppConfig();
             SetClosingTime();
+            AwakeDeskHelpers.MakeWindowAlwaysOnTop(this);
         }
 
         private void QuitApplication_Click(object sender, RoutedEventArgs e)
@@ -185,9 +188,15 @@ namespace AwakeDesk.Views
         #region Timers
         private void MainTimer_Tick(object? sender, EventArgs e)
         {
-            ActualTime = DateTime.Now.ToString(ACTUAL_TIME_FORMAT);
+            var now = DateTime.Now;
+            ActualTime = now.ToString(ACTUAL_TIME_FORMAT);
 
-            AwakeDeskHelpers.MakeWindowAlwaysOnTop(this);
+            if ( !isSettingWindowOpen && (now - lastOnTopForcing).TotalSeconds > 10)
+            {
+                // Updates ontop only after 10 seconds since last time, to prevent glitches
+                lastOnTopForcing = now;
+                AwakeDeskHelpers.MakeWindowAlwaysOnTop(this);
+            }
 
             if (elapsedIdle >= screenSaverPreventTimeout && !moveTimer.IsEnabled)
             {
