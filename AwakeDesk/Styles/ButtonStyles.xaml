@@ -5,7 +5,7 @@
     <!--Menu button-->
     <Style x:Key="menuButton" TargetType="RadioButton">
         <Setter Property="Height" Value="40" />
-        <Setter Property="Margin" Value="0,0,0,5" />
+        <Setter Property="Margin" Value="0,10,0,0" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{StaticResource plainTextColor3}" />
         <Setter Property="BorderBrush" Value="Transparent" />
@@ -25,14 +25,14 @@
         <Style.Triggers>
             <!--Button style on hover-->
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Margin" Value="0,0,0,5" />
+                <Setter Property="Margin" Value="0,10,0,0" />
                 <Setter Property="Background" Value="{StaticResource panelOverColor}" />
                 <Setter Property="Foreground" Value="{StaticResource titleColor3}" />
                 <Setter Property="BorderBrush" Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" />
             </Trigger>
             <!--Activated button style-->
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Margin" Value="0,0,0,5" />
+                <Setter Property="Margin" Value="0,10,0,0" />
                 <Setter Property="Background" Value="{StaticResource panelActiveColor}" />
                 <Setter Property="Foreground"  Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" />
                 <Setter Property="BorderBrush" Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" />
