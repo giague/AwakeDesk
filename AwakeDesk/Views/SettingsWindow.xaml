@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="Awake Desk Settings" 
         Height="370"
-        Width="550"
+        Width="395"
         ResizeMode="NoResize" 
         WindowStyle="none" 
         Icon="/Media/ico/Clock.ico"
@@ -60,8 +60,12 @@
 
             <!--Control bar-->
             <Border Grid.Row="0"
+                    BorderThickness="1"
                     CornerRadius="10,10,0,0"
                     MouseLeftButtonDown="ControlBar_MouseLeftButtonDown">
+                <Border.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource winBorderColor3}"></SolidColorBrush>
+                </Border.BorderBrush>
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                         <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"></GradientStop>
@@ -71,7 +75,7 @@
                 <Grid x:Name="grdControlBar"
                       >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                 
@@ -81,7 +85,7 @@
                                  Margin="15,0,0,0"
                                  VerticalAlignment="Center"
                                  FlowDirection="LeftToRight"
-                                 HorizontalAlignment="Left" Width="151">
+                                 HorizontalAlignment="Left">
                         <Image Source="/Media/img/Clock_512.png" Width="15" Height="15" ></Image>
                         <TextBlock Foreground="{StaticResource titleColor2}"
                                      x:Name="SoftwareName" 
@@ -107,6 +111,20 @@
                                      Margin="0,0,0,4" 
                                      Padding="0" 
                                      VerticalAlignment="Bottom" />
+                        <TextBlock  Foreground="{StaticResource titleColor3}"
+                                    FontSize="15"
+                                    FontFamily="Montserrat"
+                                    FontWeight="Medium"
+                                    VerticalAlignment="Center"
+                                    Text="- Close time" 
+                                    Margin="5,0,0,0"/>
+                        <TextBlock Foreground="{StaticResource titleColor3}"
+                                    FontSize="15"
+                                    FontFamily="Montserrat"
+                                    FontWeight="Medium"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding ClosingTime}" 
+                                    Margin="5,0,0,0"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1"
                                 Orientation="Horizontal"
@@ -126,31 +144,13 @@
             <!--Window content-->
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="225"/>
+                    <ColumnDefinition Width="70"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!--Menu-->
                 <Border Grid.Column="0">
                     <StackPanel>
-                        <StackPanel Orientation="Horizontal"
-                                    VerticalAlignment="Center"
-                                    Margin="35,20,35,10">
-                            <TextBlock  Foreground="{StaticResource titleColor3}"
-                                        FontSize="16"
-                                        FontFamily="Montserrat"
-                                        FontWeight="Medium"
-                                        VerticalAlignment="Center"
-                                        Text="Close time" 
-                                        Margin="0"/>            
-                            <TextBlock Foreground="{StaticResource titleColor3}"
-                                        FontSize="16"
-                                        FontFamily="Montserrat"
-                                        FontWeight="Medium"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding ClosingTime}" 
-                                        Margin="5,0,0,0"/>
-                        </StackPanel>
                         <!--Menu voices-->
                         <RadioButton Style="{StaticResource menuButton}"
                                 Command="{Binding ShowTimePanelCommand}"
@@ -158,24 +158,30 @@
                                 IsChecked="True">
                             <StackPanel Orientation="Horizontal">
                                 <fa:IconImage Icon="Clock" Style="{StaticResource menuButtonIcon}"></fa:IconImage>
-                                <TextBlock Text="Time" Style="{StaticResource menuButtonText}" />
                             </StackPanel>
+                            <RadioButton.ToolTip>
+                                <TextBlock>Time</TextBlock>
+                            </RadioButton.ToolTip>
                         </RadioButton>
                         <RadioButton Style="{StaticResource menuButton}"
                                 Command="{Binding ShowSettingsPanelCommand}"
                                 Tag="{StaticResource color2}">
                             <StackPanel Orientation="Horizontal">
                                 <fa:IconImage Icon="Gear" Style="{StaticResource menuButtonIcon}"></fa:IconImage>
-                                <TextBlock Text="Settings" Style="{StaticResource menuButtonText}" />
                             </StackPanel>
+                            <RadioButton.ToolTip>
+                                <TextBlock>Settings</TextBlock>
+                            </RadioButton.ToolTip>
                         </RadioButton>
                         <RadioButton Style="{StaticResource menuButton}"
                                 Command="{Binding ShowCreditsPanelCommand}"
                                 Tag="{StaticResource color3}">
                             <StackPanel Orientation="Horizontal">
                                 <fa:IconImage Icon="Info" Style="{StaticResource menuButtonIcon}"></fa:IconImage>
-                                <TextBlock Text="Credits" Style="{StaticResource menuButtonText}" />
                             </StackPanel>
+                            <RadioButton.ToolTip>
+                                <TextBlock>Credits</TextBlock>
+                            </RadioButton.ToolTip>
                         </RadioButton>
                     </StackPanel>
                 </Border>
@@ -338,13 +344,16 @@
                                     </StackPanel>
                                 </Button>
                                 <TextBlock Text="{Binding CaptureMouseText}"
-                   Foreground="{StaticResource plainTextColor1}"
-                   x:Name="CaptureMouseTextBlock"
-                   TextWrapping="Wrap"
-                   FontSize="13"
-                   TextAlignment="Center"
-                   Height="35"
-                   Visibility="Collapsed"/>
+                                           Foreground="{StaticResource plainTextColor1}"
+                                           x:Name="CaptureMouseTextBlock"
+                                           TextWrapping="Wrap"
+                                           FontSize="13"
+                                           LineHeight="45"
+                                           TextAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Height="20"
+                                           Margin="0,15,0,10"
+                                           Visibility="Collapsed"/>     
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Foreground="{StaticResource plainTextColor1}"
                                            VerticalAlignment="Top" 

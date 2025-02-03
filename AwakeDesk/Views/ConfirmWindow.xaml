@@ -60,8 +60,12 @@
 
             <!--Control bar-->
             <Border Grid.Row="0"
-        CornerRadius="10,10,0,0"
-        MouseLeftButtonDown="ControlBar_MouseLeftButtonDown">
+                    BorderThickness="1"
+                    CornerRadius="10,10,0,0"
+                    MouseLeftButtonDown="ControlBar_MouseLeftButtonDown">
+                <Border.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource winBorderColor3}"></SolidColorBrush>
+                </Border.BorderBrush>
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                         <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"></GradientStop>
