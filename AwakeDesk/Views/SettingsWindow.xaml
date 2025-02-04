@@ -8,7 +8,7 @@
         xmlns:localViews="clr-namespace:AwakeDesk.Views"
         mc:Ignorable="d"
         Title="Awake Desk Settings" 
-        Height="370"
+        Height="340"
         Width="395"
         ResizeMode="NoResize" 
         WindowStyle="none" 
@@ -78,7 +78,7 @@
                         <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                
+
                     <StackPanel Grid.Column="0"
                                  Orientation="Horizontal"
                                  Height="25"
@@ -191,28 +191,31 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <!--Header / Caption-->
-                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="70"/>
                             <!--Content section / Child views-->
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
 
                         <!--Header / Caption-->
-                        <StackPanel Grid.Row="0"
+                        <StackPanel Grid.Row="0">
+                            <StackPanel 
                                     Orientation="Horizontal"
                                     VerticalAlignment="Top"
                                     Margin="0,20,0,0">
-                            <fa:IconImage Icon="{Binding PanelIcon}"
+                                <fa:IconImage Icon="{Binding PanelIcon}"
                                             Height="20"
                                             Width="20"
-                                            Foreground="{StaticResource titleColor2}"
+                                            Foreground="{Binding TitleColor}"
                                             Margin="35,0,10,0"/>
-                            <TextBlock Text="{Binding Caption}"
-                                        Foreground="{StaticResource titleColor2}"
+                                <TextBlock Text="{Binding Caption}"
+                                        Foreground="{Binding TitleColor}"
                                         FontSize="20"
                                         FontFamily="Montserrat"
                                         FontWeight="Medium"
                                         VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <Rectangle Height="2" Fill="{Binding TitleColor}" Margin="35,10,40,10"  HorizontalAlignment="Stretch"/>
                         </StackPanel>
 
 
@@ -221,7 +224,7 @@
                             <StackPanel x:Name="pnlTime"
                                     Margin="30,0,30,0" >
                                 <StackPanel Orientation="Horizontal" 
-                                        Margin="5,10,5,0">
+                                        Margin="5,0">
                                     <StackPanel Width="120"
                                             Margin="0,0,10,0">
                                         <Button Click="AddRemoveTime_Click"
@@ -324,36 +327,37 @@
                                         </Button>
                                     </StackPanel>
                                 </StackPanel>
-
+                                <StackPanel Margin="5,0,8,0">
+                                    <Button Click="CaptureMouse_Click"
+                                            x:Name="CaptureMouseButton"
+                                            Style="{StaticResource presetButton}"
+                                            Tag="{StaticResource buttonPresetColor}"
+                                            FontWeight="Bold"
+                                            Height="45" 
+                                            Margin="0,0,0,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <fa:IconImage Icon="Mouse" Style="{StaticResource presetButtonIcon}"/>
+                                            <TextBlock Text="Select mouse starting point" Style="{StaticResource presetButtonText}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <TextBlock Text="{Binding CaptureMouseText}"
+                                               Foreground="{StaticResource plainTextColor1}"
+                                               x:Name="CaptureMouseTextBlock"
+                                               TextWrapping="Wrap"
+                                               FontSize="13"
+                                               LineHeight="45"
+                                               TextAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Height="20"
+                                               Margin="0,15,0,10"
+                                               Visibility="Collapsed"/>
+                                </StackPanel>
                             </StackPanel>
 
                             <!-- Settings Tab-->
                             <StackPanel x:Name="pnlSettings"
-                                    Margin="30,0,30,0"
+                                    Margin="35,0,30,0"
                                     Height="310">
-                                <Button Click="CaptureMouse_Click"
-                                    x:Name="CaptureMouseButton"
-                                    Style="{StaticResource presetButton}"
-                                    Tag="{StaticResource buttonPresetColor}"
-                                    FontWeight="Bold"
-                                    Height="45" 
-                                    Margin="0,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <fa:IconImage Icon="Mouse" Style="{StaticResource presetButtonIcon}"/>
-                                        <TextBlock Text="Select mouse starting point" Style="{StaticResource presetButtonText}"/>
-                                    </StackPanel>
-                                </Button>
-                                <TextBlock Text="{Binding CaptureMouseText}"
-                                           Foreground="{StaticResource plainTextColor1}"
-                                           x:Name="CaptureMouseTextBlock"
-                                           TextWrapping="Wrap"
-                                           FontSize="13"
-                                           LineHeight="45"
-                                           TextAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Height="20"
-                                           Margin="0,15,0,10"
-                                           Visibility="Collapsed"/>     
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Foreground="{StaticResource plainTextColor1}"
                                            VerticalAlignment="Top" 
@@ -373,7 +377,7 @@
                                         CaretBrush="LightGray"
                                         BorderBrush="DarkGray"
                                         BorderThickness="0,0,0,2"
-                                        Height="40"
+                                        Height="30"
                                         VerticalContentAlignment="Center"
                                         MaxLength="2"
                                         Margin="0"
@@ -406,7 +410,7 @@
                                             CaretBrush="LightGray"
                                             BorderBrush="DarkGray"
                                             BorderThickness="0,0,0,2"
-                                            Height="40"
+                                            Height="30"
                                             VerticalContentAlignment="Center"
                                             Margin="0"
                                             Padding="5,0"
@@ -439,7 +443,7 @@
                                             CaretBrush="LightGray"
                                             BorderBrush="DarkGray"
                                             BorderThickness="0,0,0,2"
-                                            Height="40"
+                                            Height="30"
                                             VerticalContentAlignment="Center"
                                             Margin="0"
                                             Padding="5,0"
@@ -471,7 +475,7 @@
                                             Foreground="{StaticResource plainTextColor3}"
                                             BorderBrush="DarkGray"
                                             BorderThickness="0,0,0,2"
-                                            Height="40"
+                                            Height="30"
                                             VerticalContentAlignment="Center"
                                             Margin="0"
                                             Padding="5,0"

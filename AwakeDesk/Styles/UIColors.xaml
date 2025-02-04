@@ -12,8 +12,8 @@
     <Color x:Key="winBorderColor3">#5C7D95</Color>
 
     <!--Color Palette-->
-    <SolidColorBrush x:Key="color1" Color="#E2A14A"/>
-    <SolidColorBrush x:Key="color2" Color="#4AB8C6"/>
+    <SolidColorBrush x:Key="color1" Color="#4AB8C6"/>
+    <SolidColorBrush x:Key="color2" Color="#E2A14A"/>
     <SolidColorBrush x:Key="color3" Color="#C87172"/>
     <SolidColorBrush x:Key="color4" Color="#D65C66"/>
     <SolidColorBrush x:Key="color5" Color="#5C92B1"/>

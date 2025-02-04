@@ -25,6 +25,7 @@ namespace AwakeDesk.Views
         private string _currentSettingPanel;
         private string _caption;
         private IconChar _panelIcon;
+        private SolidColorBrush _titleColor;
 
         private bool capturingMouse = false;
         private int catchCoundDownCounter = 3;
@@ -428,10 +429,20 @@ namespace AwakeDesk.Views
         }
         public IconChar PanelIcon
         {
-            get => _panelIcon; set
+            get => _panelIcon;
+            set
             {
                 _panelIcon = value;
                 OnPropertyChanged(nameof(PanelIcon));
+            }
+        }
+        public SolidColorBrush TitleColor
+        {
+            get => _titleColor;
+            set
+            {
+                _titleColor = value;
+                OnPropertyChanged(nameof(TitleColor));
             }
         }
 
@@ -442,23 +453,27 @@ namespace AwakeDesk.Views
         public ICommand ShowSettingsPanelCommand { get; }
         public ICommand ShowCreditsPanelCommand { get; }
 
+
         private void ExecuteShowTimePanelCommand(object obj)
         {
             CurrentSettingPanel = PANEL_TIME;
             Caption = "Time";
             PanelIcon = IconChar.Clock;
+            TitleColor = (SolidColorBrush)this.FindResource("color1");
         }
         private void ExecuteShowSettingsPanelCommand(object obj)
         {
             CurrentSettingPanel = PANEL_SETTINGS;
             Caption = "Settings";
             PanelIcon = IconChar.Gear;
+            TitleColor = (SolidColorBrush)this.FindResource("color2");
         }
         private void ExecuteShowCretitsPanelCommand(object obj)
         {
             CurrentSettingPanel = PANEL_CREDITS;
             Caption = "Credits";
             PanelIcon = IconChar.Info;
+            TitleColor = (SolidColorBrush)this.FindResource("color3");
         }
 
         #endregion
