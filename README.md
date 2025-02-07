@@ -30,6 +30,13 @@ This screen is used to configure and save application settings.
   - **Settings**: Opens the configuration windows shown in the screenshots.
   - **Quit**: Closes the application.
 
+## Release
+
+To view all official releases, visit the [AwakeDesk releases page on GitHub](https://github.com/giague/AwakeDesk/releases).
+
+### Version 1.0.0.0 (Latest) 
+- **Initial Release**: First stable release with all the core features including automatic mouse movement and deactivation timer.
+
 ## Contributing
 
 Feel free to open issues or submit pull requests to improve the project.
