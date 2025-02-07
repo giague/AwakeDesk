@@ -2,6 +2,7 @@
 using AwakeDesk.Models;
 using FontAwesome.Sharp;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -493,10 +494,14 @@ namespace AwakeDesk.Views
         {
             CloseWindow();
         }
-
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        private void Donate_Click(object sender, RoutedEventArgs e)
         {
-
+            string koFiUrl = "https://ko-fi.com/giague";
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = koFiUrl,
+                UseShellExecute = true
+            });
         }
     }
 }

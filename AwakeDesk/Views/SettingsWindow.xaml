@@ -508,6 +508,12 @@
                                                Margin="0">To report bugs or request assistance, open a issue: <Hyperlink NavigateUri="https://github.com/giague/AwakeDesk/issues" RequestNavigate="Hyperlink_RequestNavigate">GitHub issue</Hyperlink>
                                     </TextBlock>
                                 </StackPanel>
+                                <Button Width="auto" Height="auto" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Donate_Click">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image Source="../Media/img/kofi_symbol.png" Width="24" Height="24" Margin="10,0"/>
+                                        <TextBlock VerticalAlignment="Center" FontSize="14" FontFamily="Montserrat" Text="Support Me on Ko-fi" Margin="0,0,10,0"/>
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                         </StackPanel>
                     </Grid>

@@ -24,6 +24,7 @@
     <None Remove="Media\img\ClockTray.png" />
     <None Remove="Media\img\ClockTrayHighlighted.png" />
     <None Remove="Media\img\Clock_512.png" />
+    <None Remove="Media\img\kofi_symbol.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +42,7 @@
     <Resource Include="Media\img\ClockTray.png" />
     <Resource Include="Media\img\ClockTrayHighlighted.png" />
     <Resource Include="Media\img\Clock_512.png" />
+    <Resource Include="Media\img\kofi_symbol.png" />
   </ItemGroup>
 
   <ItemGroup>

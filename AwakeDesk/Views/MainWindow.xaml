@@ -44,6 +44,13 @@
                 </Image.ToolTip>
                 <Image.ContextMenu>
                     <ContextMenu>
+                        <MenuItem x:Name="DonateContextMenuItem"
+                            Header="Donate" 
+                            Click="Donate_Click">
+                            <MenuItem.Icon>
+                                <Image Source="../Media/img/kofi_symbol.png" Width="16" Height="16"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
                         <MenuItem x:Name="SettingContextMenuItem"
                             Header="Settings" 
                             Click="OpenSettings_Click">

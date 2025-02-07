@@ -76,7 +76,6 @@ namespace AwakeDesk
             Application.Current.Shutdown();
         }
 
-
     }
 
 }

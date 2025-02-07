@@ -38,3 +38,5 @@ Feel free to open issues or submit pull requests to improve the project.
 
 This project is licensed under the GNU General Public License v3.0. See the `LICENSE` file for details.
 
+## Donate
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/giague)

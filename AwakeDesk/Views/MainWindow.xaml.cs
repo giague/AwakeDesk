@@ -3,6 +3,7 @@ using AwakeDesk.Helpers;
 using AwakeDesk.Models;
 using NLog;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -100,6 +101,15 @@ namespace AwakeDesk.Views
             SetClosingTime();
         }
 
+        private void Donate_Click(object sender, RoutedEventArgs e)
+        {
+            string koFiUrl = "https://ko-fi.com/giague";
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = koFiUrl,
+                UseShellExecute = true
+            });
+        }
         private void OpenSettings_Click(object sender, RoutedEventArgs e)
         {
             if (!IsSettingWindowOpen)
