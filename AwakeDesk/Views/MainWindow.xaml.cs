@@ -1,6 +1,7 @@
 ﻿
 using AwakeDesk.Helpers;
 using AwakeDesk.Models;
+using NLog;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -42,6 +43,8 @@ namespace AwakeDesk.Views
         private DateTime lastOnTopForcing;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public MainWindow()
         {

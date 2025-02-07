@@ -23,6 +23,7 @@
                 <RowDefinition Height="25"/>
                 <!--Window content-->
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
 
             <!--Control bar-->
@@ -62,22 +63,6 @@
                                      FontFamily="Montserrat"
                                      Margin="5,0,0,0" 
                                      VerticalAlignment="Center" />
-                        <TextBlock Foreground="{StaticResource titleColor2}"
-                                     Text="v." 
-                                     FontSize="12"
-                        
-                                     FontFamily="Montserrat"
-                                     Margin="5,0,0,4" 
-                                     Padding="0" 
-                                     VerticalAlignment="Bottom" />
-                        <TextBlock Foreground="{StaticResource titleColor2}"
-                                     x:Name="SoftwareVersion" 
-                                     Text="1.0" 
-                                     FontSize="12"
-                                     FontFamily="Montserrat"
-                                     Margin="0,0,0,4" 
-                                     Padding="0" 
-                                     VerticalAlignment="Bottom" />
                         <TextBlock  Foreground="{StaticResource titleColor3}"
                                     FontSize="15"
                                     FontFamily="Montserrat"
@@ -530,6 +515,24 @@
 
 
             </Grid>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="15,0">
+                <TextBlock Foreground="{StaticResource plainTextColor1}"
+                             Text="AwakeDesk v." 
+                             FontSize="10"
+                             FontFamily="Montserrat"
+                             Margin="5,0,0,4" 
+                             Padding="0" 
+                             VerticalAlignment="Bottom" />
+                <TextBlock Foreground="{StaticResource plainTextColor1}"
+                        x:Name="SoftwareVersion" 
+                        Text="1.0" 
+                        FontSize="10"
+                        FontFamily="Montserrat"
+                        Margin="0,0,0,4" 
+                        Padding="0" 
+                        VerticalAlignment="Bottom" />
+            </StackPanel>
         </Grid>
     </Border>
 </Window>

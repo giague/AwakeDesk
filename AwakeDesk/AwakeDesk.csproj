@@ -10,7 +10,16 @@
     <ApplicationIcon>Media\ico\Clock.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+
   <ItemGroup>
+    <None Remove="C:\Users\adm.guerra\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config" />
     <None Remove="Clock.ico" />
     <None Remove="Media\img\ClockTray.png" />
     <None Remove="Media\img\ClockTrayHighlighted.png" />
@@ -25,6 +34,7 @@
 
   <ItemGroup>
     <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
+    <PackageReference Include="NLog" Version="5.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,6 +71,9 @@
     <None Update="Media\mp3\Alarm7.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -68,5 +81,9 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)UpdateAssemblyVersion.ps1&quot;" />
+  </Target>
 
 </Project>
