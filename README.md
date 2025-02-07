@@ -1,4 +1,4 @@
-# AwakeDesk - WPF Application
+# AwakeDesk
 
 AwakeDesk is a WPF-based software developed in C# to prevent the screen from locking and the PC from entering sleep mode. It achieves this by automatically moving the mouse cursor when the system is inactive. 
 
