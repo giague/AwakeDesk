@@ -16,7 +16,7 @@ namespace AwakeDesk.Views
     public partial class SettingsWindow : Window, INotifyPropertyChanged
     {
         private const string PANEL_TIME = "TIME";
-        private const string PANEL_SETTINGS = "SETTINGS";
+        private const string PANEL_PREFERENCES = "SETTINGS";
         private const string PANEL_CREDITS = "INFO";
 
         private string _currentSettingPanel;
@@ -424,7 +424,7 @@ namespace AwakeDesk.Views
             {
                 _currentSettingPanel = value;
                 pnlTime.Visibility = (_currentSettingPanel == PANEL_TIME) ? Visibility.Visible : Visibility.Collapsed;
-                pnlSettings.Visibility = (_currentSettingPanel == PANEL_SETTINGS) ? Visibility.Visible : Visibility.Collapsed;
+                pnlPreferences.Visibility = (_currentSettingPanel == PANEL_PREFERENCES) ? Visibility.Visible : Visibility.Collapsed;
                 pnlCredits.Visibility = (_currentSettingPanel == PANEL_CREDITS) ? Visibility.Visible : Visibility.Collapsed;
                 OnPropertyChanged(nameof(CurrentSettingPanel));
             }
@@ -468,14 +468,14 @@ namespace AwakeDesk.Views
         private void ExecuteShowTimePanelCommand(object obj)
         {
             CurrentSettingPanel = PANEL_TIME;
-            Caption = "Time";
+            Caption = "Time & Mouse settings";
             PanelIcon = IconChar.Clock;
             TitleColor = (SolidColorBrush)this.FindResource("color1");
         }
         private void ExecuteShowSettingsPanelCommand(object obj)
         {
-            CurrentSettingPanel = PANEL_SETTINGS;
-            Caption = "Settings";
+            CurrentSettingPanel = PANEL_PREFERENCES;
+            Caption = "Preferences";
             PanelIcon = IconChar.Gear;
             TitleColor = (SolidColorBrush)this.FindResource("color2");
         }

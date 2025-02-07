@@ -127,7 +127,7 @@
                                 <fa:IconImage Icon="Clock" Style="{StaticResource menuButtonIcon}"></fa:IconImage>
                             </StackPanel>
                             <RadioButton.ToolTip>
-                                <TextBlock>Time</TextBlock>
+                                <TextBlock>Time &amp; Mouse settings</TextBlock>
                             </RadioButton.ToolTip>
                         </RadioButton>
                         <RadioButton Style="{StaticResource menuButton}"
@@ -137,7 +137,7 @@
                                 <fa:IconImage Icon="Gear" Style="{StaticResource menuButtonIcon}"></fa:IconImage>
                             </StackPanel>
                             <RadioButton.ToolTip>
-                                <TextBlock>Settings</TextBlock>
+                                <TextBlock>Preferences</TextBlock>
                             </RadioButton.ToolTip>
                         </RadioButton>
                         <RadioButton Style="{StaticResource menuButton}"
@@ -187,7 +187,7 @@
 
 
                         <StackPanel Grid.Row="1">
-                            <!-- Time content -->
+                            <!-- Time & Mouse settings content -->
                             <StackPanel x:Name="pnlTime"
                                     Margin="30,0,30,0" >
                                 <StackPanel Orientation="Horizontal" 
@@ -320,8 +320,8 @@
                                 </StackPanel>
                             </StackPanel>
 
-                            <!-- Settings Tab-->
-                            <StackPanel x:Name="pnlSettings"
+                            <!-- Preferences Tab-->
+                            <StackPanel x:Name="pnlPreferences"
                                     Margin="35,0,30,0"
                                     Height="310">
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
