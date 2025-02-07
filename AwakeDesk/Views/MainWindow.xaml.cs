@@ -1,19 +1,13 @@
 ﻿
+using AwakeDesk.Helpers;
+using AwakeDesk.Models;
 using System.ComponentModel;
-using System.Configuration;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
-using System.Text.RegularExpressions;
-using System.IO;
-using System.Runtime;
-using AwakeDesk.Models;
-using AwakeDesk.Helpers;
-using System.Text;
 using System.Windows.Media.Imaging;
-using System.Diagnostics;
+using System.Windows.Threading;
+using static AwakeDesk.Helpers.AwakeDeskHelpers;
 
 namespace AwakeDesk.Views
 {
@@ -152,8 +146,8 @@ namespace AwakeDesk.Views
             currentPos = AwakeDeskHelpers.GetCursorPosition();
             nextPos = new AwakeDeskHelpers.Point()
             {
-                X = rnd.Next(App.AwakeVariables.MouseDestinationStartingPoint.X, App.AwakeVariables.MouseDestinationStartingPoint.X + 100),
-                Y = rnd.Next(App.AwakeVariables.MouseDestinationStartingPoint.Y, App.AwakeVariables.MouseDestinationStartingPoint.Y + 100)
+                X = rnd.Next(App.AwakeVariables.MouseDestinationAreaPoint.X, App.AwakeVariables.MouseDestinationAreaPoint.X + AwakeVariables.NEXT_POS_AREA_WIDTH),
+                Y = rnd.Next(App.AwakeVariables.MouseDestinationAreaPoint.Y, App.AwakeVariables.MouseDestinationAreaPoint.Y + AwakeVariables.NEXT_POS_AREA_HEIGHT)
             };
         }
 
@@ -191,7 +185,7 @@ namespace AwakeDesk.Views
             var now = DateTime.Now;
             ActualTime = now.ToString(ACTUAL_TIME_FORMAT);
 
-            if ( !isSettingWindowOpen && (now - lastOnTopForcing).TotalSeconds > 10)
+            if (!isSettingWindowOpen && (now - lastOnTopForcing).TotalSeconds > 10)
             {
                 // Updates ontop only after 10 seconds since last time, to prevent glitches
                 lastOnTopForcing = now;
@@ -250,6 +244,7 @@ namespace AwakeDesk.Views
             {
                 movingPos.X = (int)(currentPos.X * (1 - moverDelay) + nextPos.X * moverDelay);
                 movingPos.Y = (int)(currentPos.Y * (1 - moverDelay) + nextPos.Y * moverDelay);
+                movingPos = App.AwakeVariables.MouseDestinationAreaRect.PointInRect(movingPos);
                 AwakeDeskHelpers.SetCursorPosition(movingPos);
                 moverDelay += 0.08;
             }

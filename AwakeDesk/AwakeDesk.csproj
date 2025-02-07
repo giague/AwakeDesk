@@ -63,4 +63,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Styles\WindowsStyles.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

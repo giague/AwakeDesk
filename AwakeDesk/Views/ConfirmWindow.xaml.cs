@@ -1,18 +1,6 @@
 ﻿using System.ComponentModel;
-using System.Configuration;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
-using System.Text.RegularExpressions;
-using System.IO;
-using System.Runtime;
-using AwakeDesk.Models;
-using AwakeDesk.Helpers;
-using System.Diagnostics;
-using System.Windows.Navigation;
-using FontAwesome.Sharp;
 
 namespace AwakeDesk.Views
 {

@@ -1,8 +1,5 @@
 ﻿using AwakeDesk.Models;
-using System.Configuration;
-using System.Data;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows;
 
 namespace AwakeDesk

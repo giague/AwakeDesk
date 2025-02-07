@@ -1,18 +1,15 @@
-﻿using System.ComponentModel;
-using System.Configuration;
+﻿using AwakeDesk.Helpers;
+using AwakeDesk.Models;
+using FontAwesome.Sharp;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
-using System.Text.RegularExpressions;
-using System.IO;
-using System.Runtime;
-using AwakeDesk.Models;
-using AwakeDesk.Helpers;
-using System.Diagnostics;
 using System.Windows.Navigation;
-using FontAwesome.Sharp;
+using System.Windows.Threading;
 
 namespace AwakeDesk.Views
 {
@@ -28,8 +25,8 @@ namespace AwakeDesk.Views
         private SolidColorBrush _titleColor;
 
         private bool capturingMouse = false;
+        private bool mouseAreaToggled = false;
         private int catchCoundDownCounter = 3;
-        private string captureMouseText = string.Empty;
         private bool areSettingsValid;
         private MediaPlayer demoPlayer;
         private bool isDemoPlaying = false;
@@ -38,10 +35,15 @@ namespace AwakeDesk.Views
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler WindowClosed;
 
+        private MouseCaptureWindow captureWindow;
+
         public SettingsWindow()
         {
             InitializeComponent();
             DataContext = this;
+
+            captureWindow = new MouseCaptureWindow();
+
             //Initialize commands
             ShowTimePanelCommand = new ViewModelCommand(ExecuteShowTimePanelCommand);
             ShowSettingsPanelCommand = new ViewModelCommand(ExecuteShowSettingsPanelCommand);
@@ -142,7 +144,8 @@ namespace AwakeDesk.Views
 
         private void SetCaptureMouseText()
         {
-            CaptureMouseText = $"Mouse position will be captured in {catchCoundDownCounter.ToString()} seconds";
+            var counterText = catchCoundDownCounter.ToString();
+            captureWindow.UpdateCounterText(counterText);
         }
 
         private void SetClosingTime()
@@ -193,13 +196,33 @@ namespace AwakeDesk.Views
             }
         }
 
+        private void ShowCaptureWindow(bool toggleOnly)
+        {
+            mouseAreaToggled = toggleOnly;
+            captureWindow.Close();
+            captureWindow = new MouseCaptureWindow();
+            captureWindow.Init(mouseAreaToggled);
+            captureWindow.Show();
+        }
+
         private void CaptureMouse_Click(object sender, RoutedEventArgs e)
         {
+            ShowCaptureWindow(false);
             SetCaptureMouseText();
             mouseCaptureTimer.Start();
             CapturingMouse = true;
         }
 
+        private void ToggleMouseArea_Click(object sender, RoutedEventArgs e)
+        {
+            if (!mouseAreaToggled)
+            {
+                ShowCaptureWindow(true);
+                return;
+            }
+            mouseAreaToggled = false;
+            captureWindow.Close();
+        }
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
@@ -312,9 +335,10 @@ namespace AwakeDesk.Views
             SetCaptureMouseText();
             if (catchCoundDownCounter <= 0)
             {
-                App.AwakeVariables.MouseDestinationStartingPoint = AwakeDeskHelpers.GetCursorPosition();
+                App.AwakeVariables.MouseDestinationAreaPoint = AwakeDeskHelpers.GetCursorPosition();
                 CapturingMouse = false;
                 mouseCaptureTimer.Stop();
+                captureWindow.Close();
                 catchCoundDownCounter = 3;
             }
         }
@@ -340,19 +364,6 @@ namespace AwakeDesk.Views
             }
         }
 
-        public string CaptureMouseText
-        {
-            get { return captureMouseText; }
-            set
-            {
-                if (captureMouseText != value)
-                {
-                    captureMouseText = value;
-                    OnPropertyChanged(nameof(CaptureMouseText));
-                }
-            }
-        }
-
         public bool CapturingMouse
         {
             get { return capturingMouse; }
@@ -361,8 +372,8 @@ namespace AwakeDesk.Views
                 if (capturingMouse != value)
                 {
                     capturingMouse = value;
-                    CaptureMouseButton.Visibility = capturingMouse ? Visibility.Collapsed : Visibility.Visible;
-                    CaptureMouseTextBlock.Visibility = capturingMouse ? Visibility.Visible : Visibility.Collapsed;
+                    CaptureMouseButton.IsEnabled = !capturingMouse;
+                    ToggleMouseArea.IsEnabled = !capturingMouse;
                 }
             }
         }

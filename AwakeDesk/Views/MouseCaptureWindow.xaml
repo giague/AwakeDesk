@@ -1,0 +1,30 @@
+﻿<Window x:Class="AwakeDesk.Views.MouseCaptureWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Mouse Follower"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        Loaded="Window_Loaded"
+        Width="100"
+        Height="100">
+
+    <Border BorderBrush="White" 
+            BorderThickness="1"
+            Background="#44ffffff">
+        <TextBlock x:Name="counterText"
+                   Text="3" 
+                   FontSize="80" 
+                   FontFamily="Montserrat"
+                   Foreground="White"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center">
+            <TextBlock.Effect>
+                <DropShadowEffect BlurRadius="2" ShadowDepth="5" Opacity="0.5" Color="Black"/>
+            </TextBlock.Effect>
+        </TextBlock>
+    </Border>
+</Window>

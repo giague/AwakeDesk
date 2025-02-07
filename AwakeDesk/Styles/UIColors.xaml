@@ -40,8 +40,8 @@
     <SolidColorBrush x:Key="panelActiveColor" Color="#1F4559"/>
 
     <!-- Button Colors -->
-    <SolidColorBrush x:Key="buttonMinusColor" Color="#D14343"/>
-    <SolidColorBrush x:Key="buttonPlusColor" Color="#12B051"/>
+    <SolidColorBrush x:Key="buttonMinusColor" Color="#B03A3A"/>
+    <SolidColorBrush x:Key="buttonPlusColor" Color="#0E8A44"/>
     <SolidColorBrush x:Key="buttonPresetColor" Color="#5A5F7D"/>
 
     <!-- TextBox Colors -->

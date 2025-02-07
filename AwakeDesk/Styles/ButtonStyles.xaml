@@ -14,6 +14,7 @@
                 <ControlTemplate TargetType="RadioButton">
                     <Border Background="{TemplateBinding Background}"
                             BorderThickness="4,0,0,0"
+                            CornerRadius="0,5,5,0"
                             BorderBrush="{TemplateBinding BorderBrush}">
                         <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     </Border>
@@ -99,21 +100,47 @@
         <Setter Property="Foreground" Value="{StaticResource titleColor1}"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.3" Color="Black"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Height="30"
-                        CornerRadius="15"
-                        Background="{TemplateBinding Background}">
+                        CornerRadius="5"
+                        Background="{TemplateBinding Background}"
+                        BorderThickness="1" >
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="{StaticResource winBorderColor3}" Offset="0"></GradientStop>
+                                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"></GradientStop>
+                                <GradientStop Color="{StaticResource winBorderColor1}" Offset="1"></GradientStop>
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
                         <ContentPresenter VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"/>
+                                        HorizontalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#836EFB"/>
+                <Setter Property="Background" Value="{StaticResource panelOverColor}"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="8" ShadowDepth="3" Opacity="0.5" Color="Black"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource panelActiveColor}"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="3" ShadowDepth="1" Opacity="0.2" Color="Black"/>
+                    </Setter.Value>
+                </Setter>
             </Trigger>
         </Style.Triggers>
     </Style>
