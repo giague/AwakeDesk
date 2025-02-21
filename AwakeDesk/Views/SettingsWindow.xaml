@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:AwakeDesk"
         xmlns:localViews="clr-namespace:AwakeDesk.Views"
         mc:Ignorable="d"
-        Title="Awake Desk Settings" 
+        Title="Settings" 
         Height="340"
         Width="395"
         ResizeMode="NoResize" 
@@ -23,7 +23,8 @@
                 <RowDefinition Height="25"/>
                 <!--Window content-->
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="25"/>
+                <!--Version footer-->
+                <RowDefinition Height="15"/>
             </Grid.RowDefinitions>
 
             <!--Control bar-->
@@ -31,6 +32,9 @@
                     BorderThickness="1"
                     CornerRadius="10,10,0,0"
                     MouseLeftButtonDown="ControlBar_MouseLeftButtonDown">
+                <Border.ToolTip>
+                    <TextBlock Text="{Binding SoftwareName}"/>
+                </Border.ToolTip>
                 <Border.BorderBrush>
                     <SolidColorBrush Color="{StaticResource winBorderColor3}"></SolidColorBrush>
                 </Border.BorderBrush>
@@ -56,8 +60,7 @@
                                  HorizontalAlignment="Left">
                         <Image Source="/Media/img/Clock_512.png" Width="15" Height="15" ></Image>
                         <TextBlock Foreground="{StaticResource titleColor2}"
-                                     x:Name="SoftwareName" 
-                                     Text="Awake Desk" 
+                                     Text="{Binding Title}" 
                                      FontSize="15"
                                      FontWeight="Medium"
                                      FontFamily="Montserrat"
@@ -126,13 +129,13 @@
                             </RadioButton.ToolTip>
                         </RadioButton>
                         <RadioButton Style="{StaticResource menuButton}"
-                                Command="{Binding ShowCreditsPanelCommand}"
+                                Command="{Binding ShowAboutPanelCommand}"
                                 Tag="{StaticResource color3}">
                             <StackPanel Orientation="Horizontal">
                                 <fa:IconImage Icon="Info" Style="{StaticResource menuButtonIcon}"></fa:IconImage>
                             </StackPanel>
                             <RadioButton.ToolTip>
-                                <TextBlock>Credits</TextBlock>
+                                <TextBlock>About</TextBlock>
                             </RadioButton.ToolTip>
                         </RadioButton>
                     </StackPanel>
@@ -458,10 +461,25 @@
                                 </Button>
                             </StackPanel>
 
-                            <!-- Credits Tab-->
-                            <StackPanel x:Name="pnlCredits"
+                            <!-- About Tab-->
+                            <StackPanel x:Name="pnlAbout"
                                     Margin="35,0,10,0"
                                     Height="250">
+                                <StackPanel Orientation="Horizontal" Margin="5">
+                                    <TextBlock Foreground="{StaticResource plainTextColor1}"
+                                               FontSize="12" 
+                                               FontWeight="Bold" 
+                                               Text="Awake Desk" 
+                                               Margin="0,0,5,0"/>
+                                    <TextBlock 
+                                        Foreground="{StaticResource plainTextColor2}"
+                                               FontSize="12" 
+                                               Margin="0,0,5,0" Text="{Binding SoftwareVersion}"/>
+                                    <TextBlock Foreground="{StaticResource plainTextColor2}"
+                                               FontSize="12" 
+                                               Margin="0" ><Hyperlink NavigateUri="#" RequestNavigate="OpenReleaseNote">Release notes</Hyperlink>
+                                    </TextBlock>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="5">
                                     <TextBlock Foreground="{StaticResource plainTextColor1}"
                                                FontSize="12" 
@@ -522,17 +540,17 @@
 
             </Grid>
 
+            <!--Version footer-->
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="15,0">
                 <TextBlock Foreground="{StaticResource plainTextColor1}"
-                             Text="AwakeDesk v." 
+                             Text="{Binding SoftwareName}" 
                              FontSize="10"
                              FontFamily="Montserrat"
-                             Margin="5,0,0,4" 
+                             Margin="5,0,4,4" 
                              Padding="0" 
                              VerticalAlignment="Bottom" />
                 <TextBlock Foreground="{StaticResource plainTextColor1}"
-                        x:Name="SoftwareVersion" 
-                        Text="1.0" 
+                        Text="{Binding SoftwareVersion}" 
                         FontSize="10"
                         FontFamily="Montserrat"
                         Margin="0,0,0,4" 

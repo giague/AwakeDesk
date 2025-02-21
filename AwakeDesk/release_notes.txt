@@ -1,0 +1,10 @@
+﻿## Release Notes
+
+To view all official releases, visit the [AwakeDesk releases page on GitHub](https://github.com/giague/AwakeDesk/releases).
+
+### Version 1.1 (Latest Stable)
+- **Automatic Updates**: Added a built-in update system for seamless version upgrades.  
+- **Minor Fixes and Improvements**: Various bug fixes and performance enhancements.  
+
+### Version 1.0  
+- **Initial Release**: First stable version with core features, including automatic mouse movement and a deactivation timer.

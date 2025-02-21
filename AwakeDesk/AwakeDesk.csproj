@@ -1,91 +1,111 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ApplicationIcon>Media\ico\Clock.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<ApplicationIcon>Media\ico\Clock.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="C:\Users\adm.guerra\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config" />
-    <None Remove="Clock.ico" />
-    <None Remove="Media\img\ClockTray.png" />
-    <None Remove="Media\img\ClockTrayHighlighted.png" />
-    <None Remove="Media\img\Clock_512.png" />
-    <None Remove="Media\img\kofi_symbol.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="C:\Users\adm.guerra\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config" />
+		<None Remove="Clock.ico" />
+		<None Remove="Media\img\ClockTray.png" />
+		<None Remove="Media\img\ClockTrayHighlighted.png" />
+		<None Remove="Media\img\Clock_512.png" />
+		<None Remove="Media\img\kofi_symbol.png" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="Media\ico\Clock.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Media\ico\Clock.ico">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
-    <PackageReference Include="NLog" Version="5.4.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
+		<PackageReference Include="Markdig" Version="0.40.0" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3065.39" />
+		<PackageReference Include="NLog" Version="5.4.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Media\img\ClockTray.png" />
-    <Resource Include="Media\img\ClockTrayHighlighted.png" />
-    <Resource Include="Media\img\Clock_512.png" />
-    <Resource Include="Media\img\kofi_symbol.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\AwakeDesk.Utils\AwakeDesk.Utils.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Views\ConfirmWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Media\img\ClockTray.png" />
+		<Resource Include="Media\img\ClockTrayHighlighted.png" />
+		<Resource Include="Media\img\Clock_512.png" />
+		<Resource Include="Media\img\kofi_symbol.png" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="Media\mp3\Alarm1.mp3">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Media\mp3\Alarm2.mp3">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Media\mp3\Alarm3.mp3">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Media\mp3\Alarm4.mp3">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Media\mp3\Alarm5.mp3">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Media\mp3\Alarm6.mp3">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Media\mp3\Alarm7.mp3">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="NLog.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Views\ReleaseNotesWindow.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
+		<Compile Update="Views\ConfirmWindow.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Page Update="Styles\WindowsStyles.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="Media\mp3\Alarm1.mp3">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Media\mp3\Alarm2.mp3">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Media\mp3\Alarm3.mp3">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Media\mp3\Alarm4.mp3">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Media\mp3\Alarm5.mp3">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Media\mp3\Alarm6.mp3">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Media\mp3\Alarm7.mp3">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="NLog.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="release_notes.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="version.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)UpdateAssemblyVersion.ps1&quot;" />
-  </Target>
+	<ItemGroup>
+		<Page Update="Styles\WindowsStyles.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Views\ReleaseNotesWindow.xaml">
+		  <SubType>Designer</SubType>
+		</Page>
+	</ItemGroup>
 
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)powershell\UpdateAssemblyVersion.ps1&quot;" />
+	</Target>
+	<Target Name="PostPublish" AfterTargets="Publish">
+		<Exec Command="powershell -ExecutionPolicy Unrestricted -File $(ProjectDir)powershell\PostPublish.ps1" />
+	</Target>
 </Project>

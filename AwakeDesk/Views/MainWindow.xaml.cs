@@ -50,6 +50,8 @@ namespace AwakeDesk.Views
         public MainWindow()
         {
             InitializeComponent();
+
+            CheckForNewVersion();
             isClockIconHighlighted = false;
             lastOnTopForcing = DateTime.Now.AddMinutes(-1);
             AwakeDeskHelpers.MakeWindowAlwaysOnTop(this);
@@ -103,12 +105,7 @@ namespace AwakeDesk.Views
 
         private void Donate_Click(object sender, RoutedEventArgs e)
         {
-            string koFiUrl = "https://ko-fi.com/giague";
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = koFiUrl,
-                UseShellExecute = true
-            });
+            AwakeDeskHelpers.OpenDonatePage();
         }
         private void OpenSettings_Click(object sender, RoutedEventArgs e)
         {
@@ -132,10 +129,15 @@ namespace AwakeDesk.Views
         private void QuitApplication_Click(object sender, RoutedEventArgs e)
         {
             var confirmWindow = new ConfirmWindow();
+            confirmWindow.Text = "Are you sure to close Awake Desk?";
             if (confirmWindow.ShowDialog().GetValueOrDefault())
             {
                 Application.Current.Shutdown();
             }
+        }
+        private void CheckUpdates_Click(object sender, RoutedEventArgs e)
+        {
+            CheckForNewVersion();
         }
 
         private void CalculateScreenSaverPreventTimeout()
@@ -189,6 +191,21 @@ namespace AwakeDesk.Views
                     return;
                 }
                 ChangeImageSource(CLOCK_TRAY_ICON_BASE);
+            }
+        }
+
+        private void CheckForNewVersion()
+        {
+            var newRelease = Task.Run(async () => await CheckUpdates()).Result;
+            if (newRelease != null)
+            {
+                var confirmWindow = new ConfirmWindow();
+                confirmWindow.Text = $"New version {newRelease.Version} available, download?";
+                confirmWindow.NewReleaseInfo = newRelease;
+                if (confirmWindow.ShowDialog().GetValueOrDefault())
+                {
+                    AwakeDeskHelpers.OpenWebPage(newRelease.InstallerUrl);
+                }
             }
         }
 

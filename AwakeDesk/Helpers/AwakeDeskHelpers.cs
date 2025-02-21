@@ -1,4 +1,8 @@
 ﻿using AwakeDesk.Models;
+using AwakeDesk.Utils;
+using AwakeDesk.Utils.Models;
+using System.Configuration;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Navigation;
@@ -62,6 +66,8 @@ namespace AwakeDesk.Helpers
         private const int MDT_EFFECTIVE_DPI = 0;
         private const double DEFAULT_DPI = 96.0;
         private const int MONITOR_DEFAULTTONEAREST = 2;
+
+        private const string KOFI_URL = "https://ko-fi.com/giague";
         #endregion 
 
         #region Structures
@@ -185,7 +191,6 @@ namespace AwakeDesk.Helpers
             int elapsedMilliseconds = Environment.TickCount - (int)lastInputInfo.dwTime;
             return elapsedMilliseconds / 1000;
         }
-
         public static void SetCursorPosition(Point point)
         {
             Input[] inputs = new Input[1];
@@ -202,6 +207,30 @@ namespace AwakeDesk.Helpers
             nint hwnd = new System.Windows.Interop.WindowInteropHelper(window).Handle;
 
             SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+        }
+
+        public static void OpenDonatePage()
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = KOFI_URL,
+                UseShellExecute = true
+            });
+        }
+
+        public static void OpenWebPage(string url)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            });
+        }
+
+        public async static Task<NewReleaseInfo?> CheckUpdates()
+        {
+            var updater = new UpdateChecker();
+            return await updater.RetrieveNewRelease(App.AwakeDeskSettings.CurrentVersion);
         }
     }
 }

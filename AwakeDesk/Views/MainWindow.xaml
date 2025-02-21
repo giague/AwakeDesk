@@ -44,6 +44,14 @@
                 </Image.ToolTip>
                 <Image.ContextMenu>
                     <ContextMenu>
+                        <MenuItem x:Name="SettingContextMenuItem"
+                            Header="Settings" 
+                            Click="OpenSettings_Click">
+                            <MenuItem.Icon>
+                                <fa:IconImage Icon="Gear" Width="16" Height="16" Foreground="DarkBlue"></fa:IconImage>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
                         <MenuItem x:Name="DonateContextMenuItem"
                             Header="Donate" 
                             Click="Donate_Click">
@@ -51,11 +59,10 @@
                                 <Image Source="../Media/img/kofi_symbol.png" Width="16" Height="16"></Image>
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem x:Name="SettingContextMenuItem"
-                            Header="Settings" 
-                            Click="OpenSettings_Click">
+                        <Separator />
+                        <MenuItem Header="Check updates" Click="CheckUpdates_Click">
                             <MenuItem.Icon>
-                                <fa:IconImage Icon="Gear" Width="16" Height="16" Foreground="DarkBlue"></fa:IconImage>
+                                <fa:IconImage Icon="Repeat" Width="16" Height="16" Foreground="Orange"></fa:IconImage>
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Header="Quit" 

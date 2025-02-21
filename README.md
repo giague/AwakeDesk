@@ -1,4 +1,4 @@
-# AwakeDesk
+﻿# AwakeDesk
 
 AwakeDesk is a WPF-based software developed in C# to prevent the screen from locking and the PC from entering sleep mode. It achieves this by automatically moving the mouse cursor when the system is inactive. 
 
@@ -30,12 +30,16 @@ This screen is used to configure and save application settings.
   - **Settings**: Opens the configuration windows shown in the screenshots.
   - **Quit**: Closes the application.
 
-## Release
+## Release Notes
 
 To view all official releases, visit the [AwakeDesk releases page on GitHub](https://github.com/giague/AwakeDesk/releases).
 
-### Version 1.0.0.0 (Latest) 
-- **Initial Release**: First stable release with all the core features including automatic mouse movement and deactivation timer.
+### Version 1.1 (Latest Stable)
+- **Automatic Updates**: Added a built-in update system for seamless version upgrades.  
+- **Minor Fixes and Improvements**: Various bug fixes and performance enhancements.  
+
+### Version 1.0  
+- **Initial Release**: First stable version with core features, including automatic mouse movement and a deactivation timer.
 
 ## Contributing
 

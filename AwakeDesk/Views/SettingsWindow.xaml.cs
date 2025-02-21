@@ -2,7 +2,6 @@
 using AwakeDesk.Models;
 using FontAwesome.Sharp;
 using System.ComponentModel;
-using System.Configuration;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -18,8 +17,10 @@ namespace AwakeDesk.Views
     {
         private const string PANEL_TIME = "TIME";
         private const string PANEL_PREFERENCES = "SETTINGS";
-        private const string PANEL_CREDITS = "INFO";
+        private const string PANEL_ABOUT = "ABOUT";
 
+        private string softwareName = string.Empty;
+        private string softwareVersion = string.Empty;
         private string _currentSettingPanel;
         private string _caption;
         private IconChar _panelIcon;
@@ -48,12 +49,13 @@ namespace AwakeDesk.Views
             //Initialize commands
             ShowTimePanelCommand = new ViewModelCommand(ExecuteShowTimePanelCommand);
             ShowSettingsPanelCommand = new ViewModelCommand(ExecuteShowSettingsPanelCommand);
-            ShowCreditsPanelCommand = new ViewModelCommand(ExecuteShowCretitsPanelCommand);
+            ShowAboutPanelCommand = new ViewModelCommand(ExecuteShowCretitsPanelCommand);
 
             //Default panel
             ExecuteShowTimePanelCommand(null);
 
-            SoftwareVersion.Text = App.AwakeDeskSettings.CurrentVersion;
+            SoftwareName = AwakeDeskSettings.SOFTWARE_NAME;
+            SoftwareVersion  = App.AwakeDeskSettings.CurrentVersionLabel;
             AlarmDelayMinutesSetting.Text = App.AwakeDeskSettings.AlarmDelayMinutes.ToString();
             Preset1Setting.Text = App.AwakeDeskSettings.Preset1;
             Preset2Setting.Text = App.AwakeDeskSettings.Preset2;
@@ -228,6 +230,11 @@ namespace AwakeDesk.Views
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
             e.Handled = true;
+        }
+        private void OpenReleaseNote(object sender, RequestNavigateEventArgs e)
+        {
+            var rn = new ReleaseNotesWindow();
+            rn.ShowDialog();
         }
 
         private void ControlBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -426,7 +433,7 @@ namespace AwakeDesk.Views
                 _currentSettingPanel = value;
                 pnlTime.Visibility = (_currentSettingPanel == PANEL_TIME) ? Visibility.Visible : Visibility.Collapsed;
                 pnlPreferences.Visibility = (_currentSettingPanel == PANEL_PREFERENCES) ? Visibility.Visible : Visibility.Collapsed;
-                pnlCredits.Visibility = (_currentSettingPanel == PANEL_CREDITS) ? Visibility.Visible : Visibility.Collapsed;
+                pnlAbout.Visibility = (_currentSettingPanel == PANEL_ABOUT) ? Visibility.Visible : Visibility.Collapsed;
                 OnPropertyChanged(nameof(CurrentSettingPanel));
             }
         }
@@ -458,14 +465,38 @@ namespace AwakeDesk.Views
             }
         }
 
+        public string SoftwareName
+        {
+            get { return softwareName; }
+            set
+            {
+                if (softwareName != value)
+                {
+                    softwareName = value;
+                    OnPropertyChanged(nameof(SoftwareName));
+                }
+            }
+        }
+
+        public string SoftwareVersion
+        {
+            get { return softwareVersion; }
+            set
+            {
+                if (softwareVersion != value)
+                {
+                    softwareVersion = value;
+                    OnPropertyChanged(nameof(SoftwareVersion));
+                }
+            }
+        }
         #endregion
 
         #region Commands
         public ICommand ShowTimePanelCommand { get; }
         public ICommand ShowSettingsPanelCommand { get; }
-        public ICommand ShowCreditsPanelCommand { get; }
-
-
+        public ICommand ShowAboutPanelCommand { get; }
+        
         private void ExecuteShowTimePanelCommand(object obj)
         {
             CurrentSettingPanel = PANEL_TIME;
@@ -482,8 +513,8 @@ namespace AwakeDesk.Views
         }
         private void ExecuteShowCretitsPanelCommand(object obj)
         {
-            CurrentSettingPanel = PANEL_CREDITS;
-            Caption = "Credits";
+            CurrentSettingPanel = PANEL_ABOUT;
+            Caption = "About";
             PanelIcon = IconChar.Info;
             TitleColor = (SolidColorBrush)this.FindResource("color3");
         }
@@ -496,12 +527,7 @@ namespace AwakeDesk.Views
         }
         private void Donate_Click(object sender, RoutedEventArgs e)
         {
-            string koFiUrl = "https://ko-fi.com/giague";
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = koFiUrl,
-                UseShellExecute = true
-            });
+            AwakeDeskHelpers.OpenDonatePage();
         }
     }
 }
