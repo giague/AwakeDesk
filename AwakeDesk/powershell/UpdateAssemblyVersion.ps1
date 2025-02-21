@@ -65,7 +65,8 @@ function Update-VersionFile {
     try {
         # Verifica se il file esiste
         if (Test-Path -Path $VersionFile) {
-            Set-Content -Path $VersionFile -Value $NewVersion -Encoding UTF8 -ErrorAction Stop
+            # Scrivi il nuovo valore della versione nel file senza aggiungere un a capo
+            $NewVersion | Out-File -FilePath $VersionFile -Encoding UTF8 -NoNewline
             Write-Host "File '$VersionFile' updated with version: $NewVersion"
         } else {
             Write-Warning "Version file '$VersionFile' not found. Skipping update."
