@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace AwakeDesk.Models
 {
@@ -11,7 +6,7 @@ namespace AwakeDesk.Models
     {
         //Fields
         private readonly Action<object> _executeAction;
-        private readonly Predicate<object> _canExecuteAction;
+        private readonly Predicate<object>? _canExecuteAction;
 
         //Constructors
         public ViewModelCommand(Action<object> executeAction)
@@ -27,21 +22,24 @@ namespace AwakeDesk.Models
         }
 
         //Events
-        public event EventHandler CanExecuteChanged
+        public event EventHandler? CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
 
         //Methods
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
-            return _canExecuteAction == null ? true : _canExecuteAction(parameter);
+            return _canExecuteAction is null || parameter is null || _canExecuteAction(parameter);
         }
 
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
-            _executeAction(parameter);
+            if (parameter is not null)
+            {
+                _executeAction(parameter);
+            }
         }
     }
 }

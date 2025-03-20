@@ -1,10 +1,5 @@
 ﻿using AwakeDesk.Utils.Models;
 using System.Text.Json;
-using System;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Net.Http.Headers;
 
 namespace AwakeDesk.Utils
 {
@@ -33,13 +28,18 @@ namespace AwakeDesk.Utils
 
                 JsonElement assets = doc.RootElement.GetProperty("assets");
                 string? versionUrl = null;
+                string? installerUrl = null;
                 string? releaseNotesUrl = null;
                 foreach (JsonElement asset in assets.EnumerateArray())
                 {
-                    string name = asset.GetProperty("name").GetString();
+                    string? name = asset.GetProperty("name").GetString();
+                    if (name == null)
+                    {
+                        continue;
+                    }
                     if (name.EndsWith("_Setup.exe"))
                     {
-                        newRelease.InstallerUrl = asset.GetProperty("browser_download_url").GetString();
+                        installerUrl = asset.GetProperty("browser_download_url").GetString();
                     }
                     if (name == "version.txt")
                     {
@@ -51,8 +51,9 @@ namespace AwakeDesk.Utils
                     }
                 }
 
-                if (!string.IsNullOrEmpty(versionUrl))
+                if (!string.IsNullOrEmpty(versionUrl) && !string.IsNullOrEmpty(installerUrl))
                 {
+                    newRelease.InstallerUrl = installerUrl;
                     newRelease.Version = await client.GetStringAsync(versionUrl);
                     if (!string.IsNullOrEmpty(releaseNotesUrl))
                     {

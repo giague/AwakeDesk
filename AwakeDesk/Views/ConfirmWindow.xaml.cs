@@ -17,7 +17,7 @@ namespace AwakeDesk.Views
 
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        public event EventHandler WindowClosed;
+        public event EventHandler? WindowClosed;
 
 
         public ConfirmWindow()
@@ -26,7 +26,7 @@ namespace AwakeDesk.Views
             releaseNotes.Visibility = Visibility.Hidden;
             DataContext = this;
             SoftwareName = AwakeDeskSettings.SOFTWARE_NAME;
-            SoftwareVersion = App.AwakeDeskSettings.CurrentVersionLabel;
+            SoftwareVersion = App.ADSettings.CurrentVersionLabel;
 
         }
 

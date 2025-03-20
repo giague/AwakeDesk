@@ -35,49 +35,49 @@ namespace AwakeDesk.Models
         }
 
 
-    internal void LoadFromConfiguration()
-    {
-        CurrentVersion = ConfigurationManager.AppSettings["CurrentVersion"] ?? "1.0";
-        UpdateUrl = ConfigurationManager.AppSettings["UpdateUrl"] ?? "https://github.com/giague/AwakeDesk/blob/main/AwakeDesk/App.config";
-        var configAlarmDelayMinutes = ConfigurationManager.AppSettings["AlarmDelayMinutes"] ?? "5";
-        AlarmDelayMinutes = 5;
-        if (int.TryParse(configAlarmDelayMinutes, out int alarmDelayMinutes))
+        internal void LoadFromConfiguration()
         {
-            AlarmDelayMinutes = alarmDelayMinutes;
-        }
-
-        Preset1 = ConfigurationManager.AppSettings["Preset1"] ?? "13:30";
-        Preset2 = ConfigurationManager.AppSettings["Preset2"] ?? "17:05";
-
-        ActiveAlarmRingtone = ConfigurationManager.AppSettings["ActiveAlarmRingtone"] ?? "Media/mp3/Alarm1.mp3";
-
-        var ringtoneKey = ConfigurationManager.AppSettings["AvailableAlarmRingtones"];
-        if (!string.IsNullOrEmpty(ringtoneKey))
-        {
-            var ringtones = ringtoneKey.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            AvailableAlarmRingtones = new();
-            foreach (var ringtonePath in ringtones)
+            CurrentVersion = ConfigurationManager.AppSettings["CurrentVersion"] ?? "1.0";
+            UpdateUrl = ConfigurationManager.AppSettings["UpdateUrl"] ?? "https://github.com/giague/AwakeDesk/blob/main/AwakeDesk/App.config";
+            var configAlarmDelayMinutes = ConfigurationManager.AppSettings["AlarmDelayMinutes"] ?? "5";
+            AlarmDelayMinutes = 5;
+            if (int.TryParse(configAlarmDelayMinutes, out int alarmDelayMinutes))
             {
-                var ringtoneItem = new RingtoneItem
-                {
-                    Path = ringtonePath,
-                    Name = Path.GetFileName(ringtonePath)
-                };
-                AvailableAlarmRingtones.Add(ringtoneItem);
+                AlarmDelayMinutes = alarmDelayMinutes;
+            }
 
+            Preset1 = ConfigurationManager.AppSettings["Preset1"] ?? "13:30";
+            Preset2 = ConfigurationManager.AppSettings["Preset2"] ?? "17:05";
+
+            ActiveAlarmRingtone = ConfigurationManager.AppSettings["ActiveAlarmRingtone"] ?? "Media/mp3/Alarm1.mp3";
+
+            var ringtoneKey = ConfigurationManager.AppSettings["AvailableAlarmRingtones"];
+            if (!string.IsNullOrEmpty(ringtoneKey))
+            {
+                var ringtones = ringtoneKey.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                AvailableAlarmRingtones = new();
+                foreach (var ringtonePath in ringtones)
+                {
+                    var ringtoneItem = new RingtoneItem
+                    {
+                        Path = ringtonePath,
+                        Name = Path.GetFileName(ringtonePath)
+                    };
+                    AvailableAlarmRingtones.Add(ringtoneItem);
+
+                }
             }
         }
-    }
 
-    public void SaveConfiguration()
-    {
-        Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-        config.AppSettings.Settings["AlarmDelayMinutes"].Value = AlarmDelayMinutes.ToString();
-        config.AppSettings.Settings["Preset1"].Value = Preset1;
-        config.AppSettings.Settings["Preset2"].Value = Preset2;
-        config.AppSettings.Settings["ActiveAlarmRingtone"].Value = ActiveAlarmRingtone;
-        config.Save(ConfigurationSaveMode.Modified);
-        ConfigurationManager.RefreshSection("appSettings");
+        public void SaveConfiguration()
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.Settings["AlarmDelayMinutes"].Value = AlarmDelayMinutes.ToString();
+            config.AppSettings.Settings["Preset1"].Value = Preset1;
+            config.AppSettings.Settings["Preset2"].Value = Preset2;
+            config.AppSettings.Settings["ActiveAlarmRingtone"].Value = ActiveAlarmRingtone;
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+        }
     }
-}
 }

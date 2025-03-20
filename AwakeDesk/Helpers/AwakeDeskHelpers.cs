@@ -1,12 +1,9 @@
 ﻿using AwakeDesk.Models;
 using AwakeDesk.Utils;
 using AwakeDesk.Utils.Models;
-using System.Configuration;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Navigation;
-using System.Windows.Threading;
 
 namespace AwakeDesk.Helpers
 {
@@ -230,7 +227,7 @@ namespace AwakeDesk.Helpers
         public async static Task<NewReleaseInfo?> CheckUpdates()
         {
             var updater = new UpdateChecker();
-            return await updater.RetrieveNewRelease(App.AwakeDeskSettings.CurrentVersion);
+            return await updater.RetrieveNewRelease(App.ADSettings.CurrentVersion);
         }
     }
 }

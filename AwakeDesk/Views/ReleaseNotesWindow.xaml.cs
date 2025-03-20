@@ -21,7 +21,7 @@ namespace AwakeDesk.Views
 
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        public event EventHandler WindowClosed;
+        public event EventHandler? WindowClosed;
 
 
         public ReleaseNotesWindow(string? releaseNoteToShow = null, string? versionToShow = null)
@@ -29,10 +29,10 @@ namespace AwakeDesk.Views
             InitializeComponent();
             DataContext = this;
             SoftwareName = AwakeDeskSettings.SOFTWARE_NAME;
-            SoftwareVersion = App.AwakeDeskSettings.CurrentVersionLabel;
+            SoftwareVersion = App.ADSettings.CurrentVersionLabel;
             releaseNoteMarkdown = releaseNoteToShow;
             releaseVersion = versionToShow;
-            InitializeWebView();
+            _ = InitializeWebView();
 
         }
 
@@ -80,7 +80,7 @@ namespace AwakeDesk.Views
             CloseWindow();
         }
 
-        private async void InitializeWebView()
+        private async Task InitializeWebView()
         {
             await webView.EnsureCoreWebView2Async();
             LoadReleaseNotes();
@@ -93,7 +93,7 @@ namespace AwakeDesk.Views
             if (string.IsNullOrEmpty(markdown) && File.Exists(filePath))
             {
                 markdown = File.ReadAllText(filePath);
-                releaseVersion = App.AwakeDeskSettings.CurrentVersion;
+                releaseVersion = App.ADSettings.CurrentVersion;
             }
             if (!string.IsNullOrEmpty(markdown))
             {
@@ -122,21 +122,17 @@ namespace AwakeDesk.Views
 
         private void webView_NavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
         {
-            Uri uri;
-            if (Uri.TryCreate(e.Uri, UriKind.Absolute, out uri))
+            if (Uri.TryCreate(e.Uri, UriKind.Absolute, out Uri? uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
             {
-                if (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)
-                {
-                    // Annulla la navigazione nel WebView2
-                    e.Cancel = true;
+                // Annulla la navigazione nel WebView2
+                e.Cancel = true;
 
-                    // Apri il link nel browser predefinito
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = uri.AbsoluteUri,
-                        UseShellExecute = true
-                    });
-                }
+                // Apri il link nel browser predefinito
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = uri.AbsoluteUri,
+                    UseShellExecute = true
+                });
             }
         }
         public string SoftwareName

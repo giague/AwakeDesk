@@ -1,6 +1,5 @@
 ﻿using AwakeDesk.Helpers;
 using AwakeDesk.Models;
-using System.Diagnostics.Eventing.Reader;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
@@ -12,7 +11,7 @@ namespace AwakeDesk.Views
         private int mousePosX;
         private int mousePosY;
         private bool toggleMode;
-        DispatcherTimer timer;
+        DispatcherTimer? timer;
         public MouseCaptureWindow()
         {
             InitializeComponent();
@@ -23,8 +22,8 @@ namespace AwakeDesk.Views
             toggleMode = toggleOnly;
             this.Width = AwakeVariables.NEXT_POS_AREA_WIDTH;
             this.Height = AwakeVariables.NEXT_POS_AREA_HEIGHT;
-            this.Left = App.AwakeVariables.MouseDestinationAreaPoint.X;
-            this.Top = App.AwakeVariables.MouseDestinationAreaPoint.Y;
+            this.Left = App.ADVariables.MouseDestinationAreaPoint.X;
+            this.Top = App.ADVariables.MouseDestinationAreaPoint.Y;
             this.Loaded += Window_Loaded;
         }
 
@@ -57,7 +56,7 @@ namespace AwakeDesk.Views
             base.OnClosed(e);
         }
 
-        private void UpdateRectanglePosition(object sender, EventArgs e)
+        private void UpdateRectanglePosition(object? sender, EventArgs? e)
         {
             var mousePos = AwakeDeskHelpers.GetCursorPosition();
             mousePosX = mousePos.X;

@@ -8,6 +8,7 @@
 		<UseWPF>true</UseWPF>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<ApplicationIcon>Media\ico\Clock.ico</ApplicationIcon>
+		<NoWarn>CA1416</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -25,6 +26,7 @@
 		<None Remove="Media\img\ClockTrayHighlighted.png" />
 		<None Remove="Media\img\Clock_512.png" />
 		<None Remove="Media\img\kofi_symbol.png" />
+		<None Remove="Media\img\kofi_tray.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -45,10 +47,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Resource Include="Media\img\ClockTray.png" />
-		<Resource Include="Media\img\ClockTrayHighlighted.png" />
+		<Content Include="Media\img\ClockTray.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Media\img\ClockTrayHighlighted.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 		<Resource Include="Media\img\Clock_512.png" />
-		<Resource Include="Media\img\kofi_symbol.png" />
+		<Content Include="Media\img\kofi_tray.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Resource Include="Media\img\kofi_symbol.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
 	</ItemGroup>
 
 	<ItemGroup>

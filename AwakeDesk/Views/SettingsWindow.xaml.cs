@@ -21,10 +21,10 @@ namespace AwakeDesk.Views
 
         private string softwareName = string.Empty;
         private string softwareVersion = string.Empty;
-        private string _currentSettingPanel;
-        private string _caption;
+        private string _currentSettingPanel = string.Empty;
+        private string _caption = string.Empty;
         private IconChar _panelIcon;
-        private SolidColorBrush _titleColor;
+        private SolidColorBrush _titleColor = new();
 
         private bool capturingMouse = false;
         private bool mouseAreaToggled = false;
@@ -35,7 +35,7 @@ namespace AwakeDesk.Views
         private readonly DispatcherTimer mouseCaptureTimer;
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        public event EventHandler WindowClosed;
+        public event EventHandler? WindowClosed;
 
         private MouseCaptureWindow captureWindow;
 
@@ -43,7 +43,7 @@ namespace AwakeDesk.Views
         {
             InitializeComponent();
             DataContext = this;
-
+            demoPlayer = new();
             captureWindow = new MouseCaptureWindow();
 
             //Initialize commands
@@ -55,21 +55,21 @@ namespace AwakeDesk.Views
             ExecuteShowTimePanelCommand(null);
 
             SoftwareName = AwakeDeskSettings.SOFTWARE_NAME;
-            SoftwareVersion  = App.AwakeDeskSettings.CurrentVersionLabel;
-            AlarmDelayMinutesSetting.Text = App.AwakeDeskSettings.AlarmDelayMinutes.ToString();
-            Preset1Setting.Text = App.AwakeDeskSettings.Preset1;
-            Preset2Setting.Text = App.AwakeDeskSettings.Preset2;
-            if (App.AwakeDeskSettings.AvailableAlarmRingtones.Count > 0)
+            SoftwareVersion = App.ADSettings.CurrentVersionLabel;
+            AlarmDelayMinutesSetting.Text = App.ADSettings.AlarmDelayMinutes.ToString();
+            Preset1Setting.Text = App.ADSettings.Preset1;
+            Preset2Setting.Text = App.ADSettings.Preset2;
+            if (App.ADSettings.AvailableAlarmRingtones.Count > 0)
             {
                 RingtoneComboBox.Items.Clear();
-                foreach (var ringtoneItem in App.AwakeDeskSettings.AvailableAlarmRingtones)
+                foreach (var ringtoneItem in App.ADSettings.AvailableAlarmRingtones)
                 {
                     RingtoneComboBox.Items.Add(ringtoneItem);
                 }
 
                 foreach (var item in RingtoneComboBox.Items)
                 {
-                    if (item is RingtoneItem ringtoneItem && ringtoneItem.Path == App.AwakeDeskSettings.ActiveAlarmRingtone)
+                    if (item is RingtoneItem ringtoneItem && ringtoneItem.Path == App.ADSettings.ActiveAlarmRingtone)
                     {
                         RingtoneComboBox.SelectedItem = item;
                         break;
@@ -153,7 +153,7 @@ namespace AwakeDesk.Views
 
         private void SetClosingTime()
         {
-            ClosingTime = App.AwakeVariables.ClosingDateTime.ToString("HH:mm");
+            ClosingTime = App.ADVariables.ClosingDateTime.ToString("HH:mm");
         }
 
         private void StartDemoPlayer()
@@ -177,22 +177,22 @@ namespace AwakeDesk.Views
                 switch (clickedButton.Name)
                 {
                     case "Minus1Hour":
-                        App.AwakeVariables.ClosingDateTime = App.AwakeVariables.ClosingDateTime.AddHours(-1);
+                        App.ADVariables.ClosingDateTime = App.ADVariables.ClosingDateTime.AddHours(-1);
                         break;
                     case "Minus5Minutes":
-                        App.AwakeVariables.ClosingDateTime = App.AwakeVariables.ClosingDateTime.AddMinutes(-5);
+                        App.ADVariables.ClosingDateTime = App.ADVariables.ClosingDateTime.AddMinutes(-5);
                         break;
                     case "Minus1Minute":
-                        App.AwakeVariables.ClosingDateTime = App.AwakeVariables.ClosingDateTime.AddMinutes(-1);
+                        App.ADVariables.ClosingDateTime = App.ADVariables.ClosingDateTime.AddMinutes(-1);
                         break;
                     case "Plus1Hour":
-                        App.AwakeVariables.ClosingDateTime = App.AwakeVariables.ClosingDateTime.AddHours(1);
+                        App.ADVariables.ClosingDateTime = App.ADVariables.ClosingDateTime.AddHours(1);
                         break;
                     case "Plus5Minutes":
-                        App.AwakeVariables.ClosingDateTime = App.AwakeVariables.ClosingDateTime.AddMinutes(5);
+                        App.ADVariables.ClosingDateTime = App.ADVariables.ClosingDateTime.AddMinutes(5);
                         break;
                     case "Plus1Minute":
-                        App.AwakeVariables.ClosingDateTime = App.AwakeVariables.ClosingDateTime.AddMinutes(1);
+                        App.ADVariables.ClosingDateTime = App.ADVariables.ClosingDateTime.AddMinutes(1);
                         break;
                 }
                 SetClosingTime();
@@ -231,11 +231,6 @@ namespace AwakeDesk.Views
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
             e.Handled = true;
         }
-        private void OpenReleaseNote(object sender, RequestNavigateEventArgs e)
-        {
-            var rn = new ReleaseNotesWindow();
-            rn.ShowDialog();
-        }
 
         private void ControlBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -250,17 +245,17 @@ namespace AwakeDesk.Views
                 switch (clickedButton.Name)
                 {
                     case "Preset1":
-                        closeTimeParts = App.AwakeDeskSettings.Preset1.Split(":");
+                        closeTimeParts = App.ADSettings.Preset1.Split(":");
                         break;
                     case "Preset2":
-                        closeTimeParts = App.AwakeDeskSettings.Preset2.Split(":");
+                        closeTimeParts = App.ADSettings.Preset2.Split(":");
                         break;
                     default:
                         return;
                 }
 
                 var dataAttuale = DateTime.Now;
-                App.AwakeVariables.ClosingDateTime = new(dataAttuale.Year, dataAttuale.Month, dataAttuale.Day, int.Parse(closeTimeParts[0]), int.Parse(closeTimeParts[1]), 0, DateTimeKind.Local);
+                App.ADVariables.ClosingDateTime = new(dataAttuale.Year, dataAttuale.Month, dataAttuale.Day, int.Parse(closeTimeParts[0]), int.Parse(closeTimeParts[1]), 0, DateTimeKind.Local);
                 SetClosingTime();
             }
         }
@@ -273,13 +268,10 @@ namespace AwakeDesk.Views
         private void RingtoneComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             CheckSettings();
-            if (RingtoneComboBox.SelectedItem is RingtoneItem selectedRingtone)
+            if (RingtoneComboBox.SelectedItem is RingtoneItem && isDemoPlaying)
             {
-                if (isDemoPlaying)
-                {
-                    demoPlayer.Stop();
-                    StartDemoPlayer();
-                }
+                demoPlayer.Stop();
+                StartDemoPlayer();
             }
         }
 
@@ -290,18 +282,18 @@ namespace AwakeDesk.Views
             {
                 return;
             }
-            App.AwakeDeskSettings.AlarmDelayMinutes = int.Parse(AlarmDelayMinutesSetting.Text);
-            App.AwakeDeskSettings.Preset1 = Preset1Setting.Text;
-            App.AwakeDeskSettings.Preset2 = Preset2Setting.Text;
-            App.AwakeDeskSettings.ActiveAlarmRingtone = ((RingtoneItem)RingtoneComboBox.SelectedItem).Path;
-            App.AwakeDeskSettings.SaveConfiguration();
+            App.ADSettings.AlarmDelayMinutes = int.Parse(AlarmDelayMinutesSetting.Text);
+            App.ADSettings.Preset1 = Preset1Setting.Text;
+            App.ADSettings.Preset2 = Preset2Setting.Text;
+            App.ADSettings.ActiveAlarmRingtone = ((RingtoneItem)RingtoneComboBox.SelectedItem).Path;
+            App.ADSettings.SaveConfiguration();
             CloseWindow();
         }
 
-        private void Settings_GotFocus(object sender, RoutedEventArgs e)
+        private static void Settings_GotFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as TextBox;
-            tb.SelectAll();
+            tb?.SelectAll();
         }
 
         private void Settings_LostFocus(object sender, RoutedEventArgs e)
@@ -343,7 +335,7 @@ namespace AwakeDesk.Views
             SetCaptureMouseText();
             if (catchCoundDownCounter <= 0)
             {
-                App.AwakeVariables.MouseDestinationAreaPoint = AwakeDeskHelpers.GetCursorPosition();
+                App.ADVariables.MouseDestinationAreaPoint = AwakeDeskHelpers.GetCursorPosition();
                 CapturingMouse = false;
                 mouseCaptureTimer.Stop();
                 captureWindow.Close();
@@ -388,12 +380,12 @@ namespace AwakeDesk.Views
 
         public string ClosingTime
         {
-            get { return App.AwakeVariables.ClosingTime; }
+            get { return App.ADVariables.ClosingTime; }
             set
             {
-                if (App.AwakeVariables.ClosingTime != value)
+                if (App.ADVariables.ClosingTime != value)
                 {
-                    App.AwakeVariables.ClosingTime = value;
+                    App.ADVariables.ClosingTime = value;
                     OnPropertyChanged(nameof(ClosingTime));
                 }
             }
@@ -401,12 +393,12 @@ namespace AwakeDesk.Views
 
         public string Preset1Text
         {
-            get { return App.AwakeDeskSettings.Preset1; }
+            get { return App.ADSettings.Preset1; }
             set
             {
-                if (App.AwakeDeskSettings.Preset1 != value)
+                if (App.ADSettings.Preset1 != value)
                 {
-                    App.AwakeDeskSettings.Preset1 = value;
+                    App.ADSettings.Preset1 = value;
                     OnPropertyChanged(nameof(Preset1Text));
                 }
             }
@@ -414,12 +406,12 @@ namespace AwakeDesk.Views
 
         public string Preset2Text
         {
-            get { return App.AwakeDeskSettings.Preset2; }
+            get { return App.ADSettings.Preset2; }
             set
             {
-                if (App.AwakeDeskSettings.Preset2 != value)
+                if (App.ADSettings.Preset2 != value)
                 {
-                    App.AwakeDeskSettings.Preset2 = value;
+                    App.ADSettings.Preset2 = value;
                     OnPropertyChanged(nameof(Preset2Text));
                 }
             }
@@ -496,8 +488,8 @@ namespace AwakeDesk.Views
         public ICommand ShowTimePanelCommand { get; }
         public ICommand ShowSettingsPanelCommand { get; }
         public ICommand ShowAboutPanelCommand { get; }
-        
-        private void ExecuteShowTimePanelCommand(object obj)
+
+        private void ExecuteShowTimePanelCommand(object? obj)
         {
             CurrentSettingPanel = PANEL_TIME;
             Caption = "Time & Mouse settings";
@@ -521,13 +513,20 @@ namespace AwakeDesk.Views
 
         #endregion
 
-        private void btnClose_Click(object sender, RoutedEventArgs e)
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             CloseWindow();
         }
+#pragma warning disable S2325 // Methods and properties that don't access instance data should be static
         private void Donate_Click(object sender, RoutedEventArgs e)
         {
             AwakeDeskHelpers.OpenDonatePage();
         }
+        private void OpenReleaseNote(object sender, RequestNavigateEventArgs e)
+        {
+            var rn = new ReleaseNotesWindow();
+            rn.ShowDialog();
+        }
+#pragma warning restore S2325 // Methods and properties that don't access instance data should be static
     }
 }

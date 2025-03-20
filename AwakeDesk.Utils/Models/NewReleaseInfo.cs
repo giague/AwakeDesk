@@ -1,9 +1,14 @@
-﻿using System;
-
-namespace AwakeDesk.Utils.Models
+﻿namespace AwakeDesk.Utils.Models
 {
     public class NewReleaseInfo
     {
+        public NewReleaseInfo()
+        {
+            Version = string.Empty;
+            InstallerUrl = string.Empty;
+            ReleaseNotes = string.Empty;
+        }
+
         public string Version { get; set; }
         public string InstallerUrl { get; set; }
         public string ReleaseNotes { get; set; }

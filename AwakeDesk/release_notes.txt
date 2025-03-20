@@ -2,7 +2,11 @@
 
 To view all official releases, visit the [AwakeDesk releases page on GitHub](https://github.com/giague/AwakeDesk/releases).
 
-### Version 1.1 (Latest Stable)
+### Version 1.2 (Latest Stable)
+- **App in system tray**: App moved in the system tray to avoid glitches and delays
+- **Minor Fixes and Improvements**: Various bug fixes and performance enhancements.  
+
+### Version 1.1
 - **Automatic Updates**: Added a built-in update system for seamless version upgrades.  
 - **Minor Fixes and Improvements**: Various bug fixes and performance enhancements.  
 

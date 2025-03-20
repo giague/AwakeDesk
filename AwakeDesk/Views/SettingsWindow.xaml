@@ -89,7 +89,7 @@
                         <Button x:Name="btnClose"
                                 Style="{StaticResource controlButton}"
                                 Tag="{StaticResource buttonTextColor}"
-                                Click="btnClose_Click">
+                                Click="BtnClose_Click">
                             <fa:IconImage Icon="Xmark" Style="{StaticResource controlButtonIcon}"/>
                         </Button>
                     </StackPanel>
