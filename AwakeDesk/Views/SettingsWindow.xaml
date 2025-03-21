@@ -129,7 +129,7 @@
                             </RadioButton.ToolTip>
                         </RadioButton>
                         <RadioButton Style="{StaticResource menuButton}"
-                                Command="{Binding ShowAboutPanelCommand}"
+                                Command="{Binding ShowCretitsPanelCommand}"
                                 Tag="{StaticResource color3}">
                             <StackPanel Orientation="Horizontal">
                                 <fa:IconImage Icon="Info" Style="{StaticResource menuButtonIcon}"></fa:IconImage>

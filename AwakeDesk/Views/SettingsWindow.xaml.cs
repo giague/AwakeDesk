@@ -49,7 +49,7 @@ namespace AwakeDesk.Views
             //Initialize commands
             ShowTimePanelCommand = new ViewModelCommand(ExecuteShowTimePanelCommand);
             ShowSettingsPanelCommand = new ViewModelCommand(ExecuteShowSettingsPanelCommand);
-            ShowAboutPanelCommand = new ViewModelCommand(ExecuteShowCretitsPanelCommand);
+            ShowCretitsPanelCommand = new ViewModelCommand(ExecuteShowCretitsPanelCommand);
 
             //Default panel
             ExecuteShowTimePanelCommand(null);
@@ -101,6 +101,12 @@ namespace AwakeDesk.Views
             {
                 demoPlayer.Stop();
             }
+
+            if (mouseAreaToggled)
+            {
+                captureWindow.Close();
+            }
+
             this.Close();
         }
 
@@ -487,7 +493,7 @@ namespace AwakeDesk.Views
         #region Commands
         public ICommand ShowTimePanelCommand { get; }
         public ICommand ShowSettingsPanelCommand { get; }
-        public ICommand ShowAboutPanelCommand { get; }
+        public ICommand ShowCretitsPanelCommand { get; }
 
         private void ExecuteShowTimePanelCommand(object? obj)
         {

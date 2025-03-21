@@ -36,10 +36,9 @@ namespace AwakeDesk.Models
 
         public void Execute(object? parameter)
         {
-            if (parameter is not null)
-            {
-                _executeAction(parameter);
-            }
+#pragma warning disable CS8604 // Possible null reference argument.
+            _executeAction(parameter);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
     }
 }
