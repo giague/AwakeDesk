@@ -44,7 +44,7 @@ namespace AwakeDesk.Views
             InitializeComponent();
             DataContext = this;
             demoPlayer = new();
-            captureWindow = new MouseCaptureWindow();
+            captureWindow = new();
 
             //Initialize commands
             ShowTimePanelCommand = new ViewModelCommand(ExecuteShowTimePanelCommand);
@@ -95,6 +95,18 @@ namespace AwakeDesk.Views
                                 && ringValid;
         }
 
+        private void ShowCaptureWindow(bool toggleOnly)
+        {
+            mouseAreaToggled = toggleOnly;
+            captureWindow.Init(mouseAreaToggled);
+            captureWindow.Show();
+        }
+        private void HideCaptureWindow()
+        {
+            captureWindow.StopTimer();
+        }
+
+
         private void CloseWindow()
         {
             if (isDemoPlaying)
@@ -104,17 +116,16 @@ namespace AwakeDesk.Views
 
             if (mouseAreaToggled)
             {
-                captureWindow.Close();
+                HideCaptureWindow();
             }
 
             this.Close();
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
-            base.OnClosed(e);
-
-            // Scatena l'evento quando la finestra viene chiusa
+            e.Cancel = true;
+            this.Hide();
             WindowClosed?.Invoke(this, EventArgs.Empty);
         }
 
@@ -205,15 +216,6 @@ namespace AwakeDesk.Views
             }
         }
 
-        private void ShowCaptureWindow(bool toggleOnly)
-        {
-            mouseAreaToggled = toggleOnly;
-            captureWindow.Close();
-            captureWindow = new MouseCaptureWindow();
-            captureWindow.Init(mouseAreaToggled);
-            captureWindow.Show();
-        }
-
         private void CaptureMouse_Click(object sender, RoutedEventArgs e)
         {
             ShowCaptureWindow(false);
@@ -230,7 +232,7 @@ namespace AwakeDesk.Views
                 return;
             }
             mouseAreaToggled = false;
-            captureWindow.Close();
+            HideCaptureWindow();
         }
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
@@ -344,7 +346,7 @@ namespace AwakeDesk.Views
                 App.ADVariables.MouseDestinationAreaPoint = AwakeDeskHelpers.GetCursorPosition();
                 CapturingMouse = false;
                 mouseCaptureTimer.Stop();
-                captureWindow.Close();
+                HideCaptureWindow();
                 catchCoundDownCounter = 3;
             }
         }

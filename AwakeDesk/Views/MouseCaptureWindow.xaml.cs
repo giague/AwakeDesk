@@ -24,22 +24,15 @@ namespace AwakeDesk.Views
             this.Height = AwakeVariables.NEXT_POS_AREA_HEIGHT;
             this.Left = App.ADVariables.MouseDestinationAreaPoint.X;
             this.Top = App.ADVariables.MouseDestinationAreaPoint.Y;
-            this.Loaded += Window_Loaded;
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
-            // Window "click-through"
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(5);
+            timer.Tick += UpdateRectanglePosition;
             var hWnd = new WindowInteropHelper(this).Handle;
             int extendedStyle = AwakeDeskHelpers.GetWindowLongExtendedStyle(hWnd);
             AwakeDeskHelpers.SetWindowLongExtendedStyle(hWnd, extendedStyle);
             if (!toggleMode)
             {
                 UpdateRectanglePosition(null, null);
-                timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(5);
-                timer.Tick += UpdateRectanglePosition;
                 timer.Start();
             }
             if (toggleMode)
@@ -47,6 +40,7 @@ namespace AwakeDesk.Views
                 UpdateCounterText(string.Empty);
             }
         }
+
         protected override void OnClosed(EventArgs e)
         {
             if (!toggleMode && timer != null && timer.IsEnabled)
@@ -54,6 +48,13 @@ namespace AwakeDesk.Views
                 timer.Stop();
             }
             base.OnClosed(e);
+        }
+
+        public void StopTimer()
+        {
+            timer.Stop();
+            UpdateCounterText("");
+            this.Hide();
         }
 
         private void UpdateRectanglePosition(object? sender, EventArgs? e)

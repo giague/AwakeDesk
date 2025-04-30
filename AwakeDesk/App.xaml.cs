@@ -36,7 +36,7 @@ namespace AwakeDesk
 
 
         private string actualTime = string.Empty;
-        private SettingsWindow? settingsWindow;
+        private SettingsWindow settingsWindow;
         private int elapsedIdle;
         private int screenSaverPreventTimeout;
         private int screenSaverTimeout;
@@ -86,6 +86,7 @@ namespace AwakeDesk
             }
 
             base.OnStartup(e);
+            settingsWindow = new();
             isClockIconHighlighted = false;
             _appBasePath = AppDomain.CurrentDomain.BaseDirectory;
 
@@ -239,7 +240,6 @@ namespace AwakeDesk
         private void SetClosingTime()
         {
             ClosingTime = ADVariables.ClosingDateTime.ToString("HH:mm");
-            OnPropertyChanged(nameof(ClosingTime));
             alarmStartedMinute = -1;
         }
 
@@ -248,7 +248,6 @@ namespace AwakeDesk
             if (!IsSettingWindowOpen)
             {
                 IsSettingWindowOpen = true;
-                settingsWindow = new();
                 settingsWindow.Show();
                 settingsWindow.WindowClosed += SettingsWindow_WindowClosed;
 
