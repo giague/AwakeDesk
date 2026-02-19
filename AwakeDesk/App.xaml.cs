@@ -39,7 +39,7 @@ namespace AwakeDesk
         private SettingsWindow settingsWindow;
         private int elapsedIdle;
         private int screenSaverPreventTimeout;
-        private int screenSaverTimeout;
+        private int systemTimeoutSeconds;
         private DispatcherTimer mainTimer = new();
         private DispatcherTimer moveTimer = new();
         private double moverDelay = 0;
@@ -86,7 +86,6 @@ namespace AwakeDesk
             }
 
             base.OnStartup(e);
-            settingsWindow = new();
             isClockIconHighlighted = false;
             _appBasePath = AppDomain.CurrentDomain.BaseDirectory;
 
@@ -96,10 +95,10 @@ namespace AwakeDesk
             ADSettings.LoadFromConfiguration();
             GetAppConfig();
             CheckForNewVersion();
-            screenSaverTimeout = AwakeDeskHelpers.GetScreenSaverTimeout();
-            if (SCREENSAVER_TIMEOUT_OVERRIDE < screenSaverTimeout)
+            systemTimeoutSeconds = AwakeDeskHelpers.GetSystemTimeoutSeconds();
+            if (SCREENSAVER_TIMEOUT_OVERRIDE < systemTimeoutSeconds)
             {
-                screenSaverTimeout = SCREENSAVER_TIMEOUT_OVERRIDE;
+                systemTimeoutSeconds = SCREENSAVER_TIMEOUT_OVERRIDE;
             }
             CalculateScreenSaverPreventTimeout();
             mainTimer = new DispatcherTimer();
@@ -149,7 +148,7 @@ namespace AwakeDesk
 
             _notifyIcon.ContextMenuStrip = contextMenu;
             _notifyIcon.DoubleClick += (s, args) => OpenSettings();
-
+            settingsWindow = new();
             ADVariables.PropertyChanged += ADVariables_PropertyChanged;
             logger.Info("Application started.");
         }
@@ -281,7 +280,7 @@ namespace AwakeDesk
         private void CalculateScreenSaverPreventTimeout()
         {
             elapsedIdle = AwakeDeskHelpers.GetIdleTime();
-            screenSaverPreventTimeout = screenSaverTimeout - rnd.Next(LOWER_BOUND_FOR_RANDOM_SCREENSAVER_PREVENT, UPPER_BOUND_FOR_RANDOM_SCREENSAVER_PREVENT);
+            screenSaverPreventTimeout = systemTimeoutSeconds - rnd.Next(LOWER_BOUND_FOR_RANDOM_SCREENSAVER_PREVENT, UPPER_BOUND_FOR_RANDOM_SCREENSAVER_PREVENT);
         }
 
         private void ExitApplication()

@@ -1,6 +1,7 @@
 ﻿using AwakeDesk.Models;
 using AwakeDesk.Utils;
 using AwakeDesk.Utils.Models;
+using NLog.Targets.Wrappers;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -45,10 +46,20 @@ namespace AwakeDesk.Helpers
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
+        [DllImport("powrprof.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern uint PowerGetActiveScheme(IntPtr UserRootPowerKey, out IntPtr ActivePolicyGuid);
+
+        [DllImport("powrprof.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern uint PowerReadACValueIndex(IntPtr RootPowerKey, ref Guid SchemeGuid, ref Guid SubGroupOfPowerSettingsGuid, ref Guid PowerSettingGuid, out uint AcValueIndex);
+
+        [DllImport("powrprof.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern uint PowerReadDCValueIndex(IntPtr RootPowerKey, ref Guid SchemeGuid, ref Guid SubGroupOfPowerSettingsGuid, ref Guid PowerSettingGuid, out uint DcValueIndex);
+
         #endregion
 
         #region Consts 
         private const uint SPI_GETSCREENSAVETIMEOUT = 14;
+        private const uint SPI_GETSCREENSAVEACTIVE = 16;
         private const int INPUT_MOUSE = 0;
         private const uint MOUSEEVENTF_MOVE = 0x0001;
         private const uint MOUSEEVENTF_ABSOLUTE = 0x8000;
@@ -64,7 +75,12 @@ namespace AwakeDesk.Helpers
         private const double DEFAULT_DPI = 96.0;
         private const int MONITOR_DEFAULTTONEAREST = 2;
 
+        private static readonly Guid GUID_VIDEO_SUBGROUP = new Guid("7516b95f-f776-4464-8c53-06167f409999");
+        private static readonly Guid GUID_VIDEO_POWERDOWN_TIMEOUT = new Guid("3c0bc021-c8a8-4e07-a973-6b11b4974d05");
+
         private const string KOFI_URL = "https://ko-fi.com/giague";
+
+        private const int FallbackTimeoutSeconds = 240;
         #endregion 
 
         #region Structures
@@ -145,11 +161,57 @@ namespace AwakeDesk.Helpers
         }
         #endregion
 
-        public static int GetScreenSaverTimeout()
+
+        public static int GetSystemTimeoutSeconds()
+        {
+            int timeout = 0;
+            int screenSaverActiveResult;
+            SystemParametersInfo(SPI_GETSCREENSAVEACTIVE, 0, out screenSaverActiveResult, 0);
+            bool isScreenSaverActive = screenSaverActiveResult != 0;
+
+            if (isScreenSaverActive)
+            {
+                timeout = GetScreenSaverTimeout();
+            }
+
+            if (timeout == 0)
+            {
+                SystemParametersInfo(SPI_GETSCREENSAVETIMEOUT, 0, out timeout, 0);
+            }
+
+            if (timeout == 0)
+            {
+                timeout = FallbackTimeoutSeconds;
+            }
+
+            return timeout;
+        }
+
+        private static int GetScreenSaverTimeout()
         {
             int timeout;
             SystemParametersInfo(SPI_GETSCREENSAVETIMEOUT, 0, out timeout, 0);
             return timeout;
+        }
+
+        private static int GetPowerTimeout()
+        {
+            IntPtr activeGuidPtr;
+            if (PowerGetActiveScheme(IntPtr.Zero, out activeGuidPtr) != 0) return 0;
+
+            Guid activeGuid = Marshal.PtrToStructure<Guid>(activeGuidPtr);
+            uint timeout = 0;
+
+            Guid subGroup = GUID_VIDEO_SUBGROUP;
+            Guid setting = GUID_VIDEO_POWERDOWN_TIMEOUT;
+
+            bool isBattery = SystemParameters.PowerLineStatus == PowerLineStatus.Offline;
+
+            uint result = isBattery
+                ? PowerReadDCValueIndex(IntPtr.Zero, ref activeGuid, ref subGroup, ref setting, out timeout)
+                : PowerReadACValueIndex(IntPtr.Zero, ref activeGuid, ref subGroup, ref setting, out timeout);
+
+            return result == 0 ? (int)timeout : 0;
         }
 
         public static int GetWindowLongExtendedStyle(IntPtr hWnd)

@@ -3,6 +3,9 @@
 To view all official releases, visit the [AwakeDesk releases page on GitHub](https://github.com/giague/AwakeDesk/releases).
 
 ### Version 1.3 (Latest Stable)
+- **Bug Fix**: If the screensaver is disabled mouse moves permanently, added fallback to power timeout then to static 240 seconds (4 minutes)
+
+### Version 1.3
 - **Bug Fix**: Prevent unexpected application termination in some scenarios
 
 ### Version 1.2
